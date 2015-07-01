@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.inovance.elevatorcontrol"
+    android:versionCode="1"
+    android:versionName="1.0.5051">
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
+
+    <application
+        android:name="com.inovance.elevatorcontrol.ElevatorControlApplication"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Global">
+        <!-- 登陆认证 -->
+        <activity
+            android:name="com.inovance.elevatorcontrol.activities.CheckAuthorizationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- 连接蓝牙设备 -->
+        <activity
+            android:name=".activities.StartUp.ChooseDeviceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Fullscreen" />
+        <!-- //////////////////////////////////////////////////////////////////////////// -->
+        <!-- TabHost 导航activity -->
+        <activity
+            android:name="com.inovance.elevatorcontrol.activities.NavigationTabActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Fullscreen"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <!-- 故障分析 -->
+        <activity
+            android:name=".activities.Analysis.TroubleAnalyzeActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <!--电梯调试-->
+        <activity
+            android:name="com.inovance.elevatorcontrol.activities.ConfigurationActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <!--首页-->
+        <activity
+            android:name="com.inovance.elevatorcontrol.activities.HomeActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize|stateHidden" />
+        <!--固件管理-->
+        <activity
+            android:name=".activities.Firmware.FirmwareManageActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <!--帮助-->
+        <activity
+            android:name=".activities.Help.HelpSystemActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <!-- ////////////////////////////////////////////////////////////////////////// -->
+        <!-- 参数详细 -->
+        <activity
+            android:name=".activities.StartUp.ParameterDetailActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 远程协助 -->
+        <activity
+            android:name=".activities.Help.RemoteHelpActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <!-- 蓝牙地址 -->
+        <activity
+            android:name=".activities.Common.BluetoothAddressActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 抓取条形码 -->
+        <!-- 内召 -->
+        <activity
+            android:name=".activities.Common.CallInsideActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 外召 -->
+        <activity
+            android:name=".activities.Common.CallOutsideActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 参数写入 -->
+        <activity
+            android:name=".activities.StartUp.ParameterUploadActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 参数读取 -->
+        <activity
+            android:name=".activities.StartUp.ParameterDownloadActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 快捷菜单设置 -->
+        <activity
+            android:name=".activities.Help.ShortcutSettingActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 用户注册 -->
+        <activity
+            android:name=".activities.StartUp.RegisterUserActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <!-- 关于 -->
+        <activity
+            android:name=".activities.Help.AboutActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 选择设备型号 -->
+        <activity
+            android:name=".activities.StartUp.SelectDeviceTypeActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 查看系统当前状态 -->
+        <activity
+            android:name=".activities.Analysis.ViewErrorStatusActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 保存的配置文件查看 -->
+        <activity
+            android:name=".activities.StartUp.ParameterViewerActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 操作日志 -->
+        <activity
+            android:name=".activities.Help.SystemLogActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 申请权限 -->
+        <activity
+            android:name=".activities.Firmware.ApplyPermissionActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 内部权限申请 -->
+        <activity
+            android:name=".activities.StartUp.InternalRegisterActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- 离线参数数据 -->
+        <activity
+            android:name=".activities.StartUp.OfflineParameterActivity"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait" />
+        <!-- Zxing barcode scanner -->
+        <activity
+            android:name=".activities.Help.ZxingScannerActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <!-- 内召外召快捷窗口 -->
+        <activity
+            android:name="com.inovance.elevatorcontrol.window.CallFloorWindow"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullSizeDialog" />
+        <!-- 解锁设备窗口 -->
+        <activity
+            android:name="com.inovance.elevatorcontrol.window.UnlockWindow"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+    </application>
+</manifest>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@color/main_background"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <com.inovance.elevatorcontrol.views.component.SegmentControl
+            android:id="@+id/segment_control"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/card_view_background"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/apply_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    </LinearLayout>
+</LinearLayout>
