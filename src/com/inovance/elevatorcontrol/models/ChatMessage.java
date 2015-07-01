@@ -16,7 +16,7 @@ import org.json.JSONObject;
 public class ChatMessage {
 
     /**
-     * 文本
+     * 文本11
      */
     @Transient
     public static final int TYPE_TEXT = 0;
