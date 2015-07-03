@@ -3,7 +3,7 @@ package com.inovance.elevatorcontrol.handlers;
 import android.app.Activity;
 import android.os.Message;
 
-import com.inovance.elevatorcontrol.activities.Analysis.TroubleAnalyzeActivity;
+import com.inovance.elevatorcontrol.activities.MainTab.TroubleAnalyzeActivity;
 import com.inovance.elevatorcontrol.models.ErrorHelp;
 
 public class CurrentErrorHandler extends UnlockHandler {

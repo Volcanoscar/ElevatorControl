@@ -89,7 +89,7 @@ public class CheckAuthorizationActivity extends Activity implements WebInterface
         btnLogin.setEnabled(false);
         btnLogin.setEnabled(true);
     }
-    //Test commit 0701-2
+
     @Override
     protected void onResume() {
         super.onResume();

@@ -1,4 +1,4 @@
-package com.inovance.elevatorcontrol.activities.Analysis;
+package com.inovance.elevatorcontrol.activities.MainTab;
 
 import android.content.Intent;
 import android.os.Bundle;

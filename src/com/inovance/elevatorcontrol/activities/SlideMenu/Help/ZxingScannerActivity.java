@@ -1,4 +1,4 @@
-package com.inovance.elevatorcontrol.activities.Help;
+package com.inovance.elevatorcontrol.activities.SlideMenu.Help;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

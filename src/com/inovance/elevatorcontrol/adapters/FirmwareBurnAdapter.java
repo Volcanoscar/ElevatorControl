@@ -8,7 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.inovance.elevatorcontrol.R;
-import com.inovance.elevatorcontrol.activities.Firmware.FirmwareManageActivity;
+import com.inovance.elevatorcontrol.activities.SlideMenu.Firmware.FirmwareManageActivity;
 import com.inovance.elevatorcontrol.models.Firmware;
 
 import java.text.DateFormat;

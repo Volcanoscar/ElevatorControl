@@ -1,4 +1,4 @@
-package com.inovance.elevatorcontrol.activities;
+package com.inovance.elevatorcontrol.activities.MainTab;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import com.inovance.bluetoothtool.BluetoothTalk;
 import com.inovance.bluetoothtool.BluetoothTool;
 import com.inovance.bluetoothtool.SerialUtility;
 import com.inovance.elevatorcontrol.R;
+import com.inovance.elevatorcontrol.activities.NavigationTabActivity;
 import com.inovance.elevatorcontrol.adapters.ShortcutListViewAdapter;
 import com.inovance.elevatorcontrol.cache.ValueCache;
 import com.inovance.elevatorcontrol.config.ApplicationConfig;

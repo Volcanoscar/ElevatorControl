@@ -27,9 +27,10 @@ import com.inovance.bluetoothtool.BluetoothTalk;
 import com.inovance.bluetoothtool.BluetoothTool;
 import com.inovance.bluetoothtool.SerialUtility;
 import com.inovance.elevatorcontrol.R;
-import com.inovance.elevatorcontrol.activities.Analysis.TroubleAnalyzeActivity;
-import com.inovance.elevatorcontrol.activities.Firmware.FirmwareManageActivity;
-import com.inovance.elevatorcontrol.activities.Help.HelpSystemActivity;
+import com.inovance.elevatorcontrol.activities.MainTab.ConfigurationActivity;
+import com.inovance.elevatorcontrol.activities.MainTab.HomeActivity;
+import com.inovance.elevatorcontrol.activities.MainTab.TroubleAnalyzeActivity;
+import com.inovance.elevatorcontrol.activities.SlideMenu.Firmware.FirmwareManageActivity;
 import com.inovance.elevatorcontrol.cache.ValueCache;
 import com.inovance.elevatorcontrol.config.ApplicationConfig;
 import com.inovance.elevatorcontrol.config.ParameterUpdateTool;
@@ -546,16 +547,16 @@ public class NavigationTabActivity extends TabActivity implements Runnable, WebI
             LinearLayout tabIndicator = (LinearLayout) LayoutInflater.from(this)
                     .inflate(R.layout.navigation_tab_indicator, getTabWidget(), false);
             String[] tabsText = getResources().getStringArray(R.array.navigation_tab_text);
-            int[] icons = new int[]{R.drawable.tab_trouble_analyze,
+            int[] icons = new int[]{
                     R.drawable.tab_configuration,
                     R.drawable.tab_home,
-                    R.drawable.tab_firmware_manage,
-                    R.drawable.tab_help_system};
-            Class<?>[] classes = new Class[]{TroubleAnalyzeActivity.class,
+                    R.drawable.tab_trouble_analyze
+            };
+            Class<?>[] classes = new Class[]{
                     ConfigurationActivity.class,
                     HomeActivity.class,
-                    FirmwareManageActivity.class,
-                    HelpSystemActivity.class};
+                    TroubleAnalyzeActivity.class
+            };
             int index = 0;
             for (String title : tabsText) {
                 tabIndicator = (LinearLayout) LayoutInflater.from(this)
@@ -573,7 +574,7 @@ public class NavigationTabActivity extends TabActivity implements Runnable, WebI
                 index++;
             }
         }
-        tabHost.setCurrentTab(2);
+        tabHost.setCurrentTab(1);
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String s) {

@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.inovance.elevatorcontrol.R;
-import com.inovance.elevatorcontrol.activities.Firmware.FirmwareManageActivity;
+import com.inovance.elevatorcontrol.activities.SlideMenu.Firmware.FirmwareManageActivity;
 import com.inovance.elevatorcontrol.adapters.FirmwareBurnAdapter;
 import com.inovance.elevatorcontrol.adapters.FirmwareDownloadAdapter;
 import com.inovance.elevatorcontrol.config.ApplicationConfig;

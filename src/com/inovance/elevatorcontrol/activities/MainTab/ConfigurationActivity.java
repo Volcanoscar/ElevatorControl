@@ -1,4 +1,4 @@
-package com.inovance.elevatorcontrol.activities;
+package com.inovance.elevatorcontrol.activities.MainTab;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -344,8 +344,9 @@ public class ConfigurationActivity extends FragmentActivity implements Runnable 
         getElevatorStatusHandler = new ElevatorStatusHandler(this);
         // 恢复出厂设置
         restoreFactoryHandler = new RestoreFactoryHandler(this);
+
         pager.setAdapter(mConfigurationAdapter);
-        pager.setOffscreenPageLimit(4);
+        pager.setOffscreenPageLimit(3);
         indicator.setViewPager(pager);
         configurationHandler = new ConfigurationHandler(this);
         indicator.setOnPageChangeListener(new OnPageChangeListener() {

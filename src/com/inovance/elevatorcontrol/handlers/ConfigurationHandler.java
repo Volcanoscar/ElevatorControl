@@ -3,7 +3,7 @@ package com.inovance.elevatorcontrol.handlers;
 import android.app.Activity;
 import android.os.Message;
 
-import com.inovance.elevatorcontrol.activities.ConfigurationActivity;
+import com.inovance.elevatorcontrol.activities.MainTab.ConfigurationActivity;
 import com.inovance.elevatorcontrol.config.ApplicationConfig;
 import com.inovance.elevatorcontrol.models.RealTimeMonitor;
 import com.inovance.elevatorcontrol.views.fragments.ConfigurationFragment;

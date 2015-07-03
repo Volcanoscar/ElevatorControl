@@ -17,7 +17,7 @@ import com.inovance.bluetoothtool.BluetoothTool;
 import com.inovance.elevatorcontrol.R;
 import com.inovance.elevatorcontrol.activities.Common.CallInsideActivity;
 import com.inovance.elevatorcontrol.activities.Common.CallOutsideActivity;
-import com.inovance.elevatorcontrol.activities.ConfigurationActivity;
+import com.inovance.elevatorcontrol.activities.MainTab.ConfigurationActivity;
 import com.inovance.elevatorcontrol.activities.StartUp.ParameterDetailActivity;
 import com.inovance.elevatorcontrol.activities.StartUp.ParameterDownloadActivity;
 import com.inovance.elevatorcontrol.activities.StartUp.ParameterUploadActivity;
@@ -76,18 +76,27 @@ public class ConfigurationFragment extends Fragment {
         configurationFragment.context = context;
         int layout = R.layout.fragment_not_found;
         switch (tabIndex) {
+//            case 0:
+//                configurationFragment.monitorList = monitorList;
+//                layout = R.layout.configuration_tab_monitor;
+//                break;
+//            case 1:
+//                layout = R.layout.configuration_tab_setting;
+//                break;
+//            case 2:
+//                layout = R.layout.configuration_tab_debug;
+//                break;
+//            case 3:
+//                layout = R.layout.configuration_tab_duplicate;
+//                break;
             case 0:
-                configurationFragment.monitorList = monitorList;
-                layout = R.layout.configuration_tab_monitor;
+                layout = R.layout.configuration_sub_common;
                 break;
             case 1:
-                layout = R.layout.configuration_tab_setting;
+                layout = R.layout.configuration_sub_specialist;
                 break;
             case 2:
-                layout = R.layout.configuration_tab_debug;
-                break;
-            case 3:
-                layout = R.layout.configuration_tab_duplicate;
+                layout = R.layout.configuration_tab_setting;
                 break;
         }
         configurationFragment.layoutId = layout;
@@ -101,23 +110,36 @@ public class ConfigurationFragment extends Fragment {
         View view = getLayoutInflater(savedInstanceState).inflate(layoutId, container, false);
         switch (tabIndex) {
             case 0:
-                monitorListView = (ListView) view.findViewById(R.id.monitor_list);
-                initMonitorListView();
+
                 break;
             case 1:
+
+                break;
+            case 2:
                 groupListView = (ListView) view.findViewById(R.id.settings_list);
                 initGroupListView();
                 break;
-            case 2:
-                debugListView = (ListView) view.findViewById(R.id.test_list);
-                initDebugListView();
-                break;
-            case 3:
-                duplicateListView = (ListView) view.findViewById(R.id.copy_list);
-                initDuplicateView();
-                break;
         }
         return view;
+    }
+
+
+    private void initGroupListView() {
+        groupSettingsList.clear();
+        groupSettingsList.addAll(ParameterGroupSettingsDao.findAll(context));
+        groupAdapter = new InstantAdapter<ParameterGroupSettings>(
+                getActivity().getApplicationContext(),
+                R.layout.list_configuration_setting_item,
+                ParameterGroupSettings.class, groupSettingsList);
+        groupListView.setAdapter(groupAdapter);
+        groupListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), ParameterDetailActivity.class);
+                intent.putExtra("SelectedId", groupSettingsList.get(position).getId());
+                getActivity().startActivity(intent);
+            }
+        });
     }
 
     private void initMonitorListView() {
@@ -164,24 +186,6 @@ public class ConfigurationFragment extends Fragment {
                         ((ConfigurationActivity) getActivity()).viewOutputTerminalStatus(position);
                     }
                 }
-            }
-        });
-    }
-
-    private void initGroupListView() {
-        groupSettingsList.clear();
-        groupSettingsList.addAll(ParameterGroupSettingsDao.findAll(context));
-        groupAdapter = new InstantAdapter<ParameterGroupSettings>(
-                getActivity().getApplicationContext(),
-                R.layout.list_configuration_setting_item,
-                ParameterGroupSettings.class, groupSettingsList);
-        groupListView.setAdapter(groupAdapter);
-        groupListView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ParameterDetailActivity.class);
-                intent.putExtra("SelectedId", groupSettingsList.get(position).getId());
-                getActivity().startActivity(intent);
             }
         });
     }

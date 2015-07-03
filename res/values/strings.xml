@@ -468,19 +468,16 @@
     <!-- //////////////////////////////////// 标签选项卡 START ////////////////////////////////// -->
     <!-- 主标签页选项卡 -->
     <string-array name="navigation_tab_text">
-        <item>故障分析</item>
         <item>电梯调试</item>
-        <item>首页</item>
-        <item>程序管理</item>
-        <item>帮助</item>
+        <item>监控参数</item>
+        <item>故障记录</item>
     </string-array>
 
     <!-- 电梯调试标签页选项卡 -->
     <string-array name="configuration_tab_text">
-        <item>实时监控</item>
-        <item>参数设置</item>
-        <item>呼梯测试</item>
-        <item>参数拷贝</item>
+        <item>常用</item>
+        <item>专家</item>
+        <item>全部</item>
     </string-array>
 
     <!-- 故障分析标签页选项卡 -->

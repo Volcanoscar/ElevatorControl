@@ -70,32 +70,32 @@
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <!-- 故障分析 -->
         <activity
-            android:name=".activities.Analysis.TroubleAnalyzeActivity"
+            android:name=".activities.MainTab.TroubleAnalyzeActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <!--电梯调试-->
         <activity
-            android:name="com.inovance.elevatorcontrol.activities.ConfigurationActivity"
+            android:name=".activities.MainTab.ConfigurationActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <!--首页-->
         <activity
-            android:name="com.inovance.elevatorcontrol.activities.HomeActivity"
+            android:name=".activities.MainTab.HomeActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize|stateHidden" />
         <!--固件管理-->
         <activity
-            android:name=".activities.Firmware.FirmwareManageActivity"
+            android:name=".activities.SlideMenu.Firmware.FirmwareManageActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <!--帮助-->
         <activity
-            android:name=".activities.Help.HelpSystemActivity"
+            android:name=".activities.SlideMenu.Help.HelpSystemActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|adjustResize" />
@@ -107,7 +107,7 @@
             android:screenOrientation="portrait" />
         <!-- 远程协助 -->
         <activity
-            android:name=".activities.Help.RemoteHelpActivity"
+            android:name=".activities.SlideMenu.Help.RemoteHelpActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
@@ -139,7 +139,7 @@
             android:screenOrientation="portrait" />
         <!-- 快捷菜单设置 -->
         <activity
-            android:name=".activities.Help.ShortcutSettingActivity"
+            android:name=".activities.SlideMenu.Help.ShortcutSettingActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait" />
         <!-- 用户注册 -->
@@ -150,7 +150,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <!-- 关于 -->
         <activity
-            android:name=".activities.Help.AboutActivity"
+            android:name=".activities.SlideMenu.Help.AboutActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait" />
         <!-- 选择设备型号 -->
@@ -160,7 +160,7 @@
             android:screenOrientation="portrait" />
         <!-- 查看系统当前状态 -->
         <activity
-            android:name=".activities.Analysis.ViewErrorStatusActivity"
+            android:name=".activities.MainTab.ViewErrorStatusActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait" />
         <!-- 保存的配置文件查看 -->
@@ -170,12 +170,12 @@
             android:screenOrientation="portrait" />
         <!-- 操作日志 -->
         <activity
-            android:name=".activities.Help.SystemLogActivity"
+            android:name=".activities.SlideMenu.Help.SystemLogActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait" />
         <!-- 申请权限 -->
         <activity
-            android:name=".activities.Firmware.ApplyPermissionActivity"
+            android:name=".activities.SlideMenu.Firmware.ApplyPermissionActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait" />
         <!-- 内部权限申请 -->
@@ -190,7 +190,7 @@
             android:screenOrientation="portrait" />
         <!-- Zxing barcode scanner -->
         <activity
-            android:name=".activities.Help.ZxingScannerActivity"
+            android:name=".activities.SlideMenu.Help.ZxingScannerActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Fullscreen"

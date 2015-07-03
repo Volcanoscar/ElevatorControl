@@ -1,4 +1,4 @@
-package com.inovance.elevatorcontrol.activities.Help;
+package com.inovance.elevatorcontrol.activities.SlideMenu.Help;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;

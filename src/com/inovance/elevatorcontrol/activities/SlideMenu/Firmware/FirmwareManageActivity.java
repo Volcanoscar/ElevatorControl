@@ -1,4 +1,4 @@
-package com.inovance.elevatorcontrol.activities.Firmware;
+package com.inovance.elevatorcontrol.activities.SlideMenu.Firmware;
 
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothSocket;

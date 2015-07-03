@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.inovance.elevatorcontrol.R;
-import com.inovance.elevatorcontrol.activities.Analysis.TroubleAnalyzeActivity;
+import com.inovance.elevatorcontrol.activities.MainTab.TroubleAnalyzeActivity;
 import com.inovance.elevatorcontrol.factory.ParameterFactory;
 import com.inovance.elevatorcontrol.models.ObjectListHolder;
 import com.inovance.elevatorcontrol.models.ParameterSettings;
