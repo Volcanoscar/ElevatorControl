@@ -2,8 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+
+    <ListView
+        android:id="@+id/common_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text = "Fill common content"/>
+        android:listSelector="@android:color/transparent"
+        android:dividerHeight="8dp"
+        android:padding="@dimen/card_view_margin"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay"
+        android:divider="@android:color/transparent"
+        />
 </LinearLayout>

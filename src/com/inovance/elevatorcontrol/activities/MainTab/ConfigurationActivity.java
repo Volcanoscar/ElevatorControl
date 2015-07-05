@@ -443,7 +443,7 @@ public class ConfigurationActivity extends FragmentActivity implements Runnable 
                 ConfigurationFragment monitorFragment = mConfigurationAdapter.getItem(0);
                 if (monitorFragment != null) {
                     reloadDataFromDataBase();
-                    monitorFragment.reloadDataSource(showStateList);
+                    //monitorFragment.reloadDataSource(showStateList);
                 }
                 ConfigurationFragment groupFragment = mConfigurationAdapter.getItem(1);
                 if (groupFragment != null) {

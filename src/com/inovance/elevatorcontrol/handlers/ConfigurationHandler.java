@@ -75,7 +75,7 @@ public class ConfigurationHandler extends UnlockHandler {
                 showMonitorList.add(monitor);
             }
             ConfigurationFragment fragment = parentActivity.mConfigurationAdapter.getItem(0);
-            fragment.reloadDataSource(showMonitorList);
+//            fragment.reloadDataSource(showMonitorList);
             parentActivity.isSyncing = false;
         }
     }
