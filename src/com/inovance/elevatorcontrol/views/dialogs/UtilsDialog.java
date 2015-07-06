@@ -2,6 +2,7 @@ package com.inovance.elevatorcontrol.views.dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
@@ -167,9 +168,22 @@ public class UtilsDialog {
     // =========================================== Exit dialog =============================================== //
 
     public static AlertDialog.Builder exitDialog(final Activity activity) {
+        String[] strings = activity.getResources().getStringArray(
+                R.array.exit_multi_choice);
+        boolean[] bStartStatus = new boolean[] { true };
+        final boolean[] defaultSelectedStatus = { true };
         return new AlertDialog.Builder(activity, R.style.GlobalDialogStyle)
-                .setMessage(activity.getResources().getString(R.string.are_you_sure_exit))
-                .setTitle(activity.getResources().getString(R.string.are_you_sure_message))
+                //.setMessage(activity.getResources().getString(R.string.are_you_sure_exit))
+                .setTitle(activity.getResources().getString(R.string.are_you_sure_exit))
+                .setMultiChoiceItems(strings, bStartStatus,
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which, boolean isChecked) {
+                                // TODO Auto-generated method stub
+                                defaultSelectedStatus[which] = isChecked;
+                            }
+                        })
                 .setNegativeButton(activity.getResources().getString(R.string.dialog_btn_cancel),
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -187,6 +201,10 @@ public class UtilsDialog {
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("Exit", true);
                         activity.startActivity(intent);
+                        if (defaultSelectedStatus[0]) {
+                            // 关闭蓝牙
+                            BluetoothAdapter.getDefaultAdapter().disable();
+                        }
                         activity.finish();
                     }
                 });
