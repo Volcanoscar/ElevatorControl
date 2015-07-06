@@ -514,6 +514,20 @@
         <item>程序提取</item>
         <item>程序烧录</item>
     </string-array>
+
+    <!-- 引导调试标签页选项卡 -->
+    <string-array name="wizard_main_tab_text">
+        <item>电机调谐 ></item>
+        <item>井道自学习 ></item>
+        <item>服务层设置 ></item>
+        <item>称重自学习 </item>
+    </string-array>
+
+    <!-- 电机调谐标签页 -->
+    <string-array name="wizard_tune_tab_text">
+        <item>同步电动机</item>
+        <item>异步电动机</item>
+    </string-array>
     <!-- //////////////////////////////////// 标签选项卡 END ////////////////////////////////// -->
 
     <string name="server_error_text">请求服务器出错</string>
@@ -544,4 +558,7 @@
         <item>参数设置</item>
         <item>程序申请</item>
     </string-array>
+
+    <string name="wizard_title">引导调试</string>
+    <string name="start_tips_text">调试前，请设好下列功能</string>
 </resources>

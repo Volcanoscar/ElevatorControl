@@ -31,6 +31,7 @@ import com.inovance.elevatorcontrol.activities.MainTab.ConfigurationActivity;
 import com.inovance.elevatorcontrol.activities.MainTab.HomeActivity;
 import com.inovance.elevatorcontrol.activities.MainTab.TroubleAnalyzeActivity;
 import com.inovance.elevatorcontrol.activities.SlideMenu.Firmware.FirmwareManageActivity;
+import com.inovance.elevatorcontrol.activities.SlideMenu.Wizard.WizardStartActivity;
 import com.inovance.elevatorcontrol.cache.ValueCache;
 import com.inovance.elevatorcontrol.config.ApplicationConfig;
 import com.inovance.elevatorcontrol.config.ParameterUpdateTool;
@@ -307,6 +308,7 @@ public class NavigationTabActivity extends TabActivity implements Runnable, WebI
                 } else {
                     slidingLayout.scrollToLeftLayout();
                 }
+                startActivity(new Intent(NavigationTabActivity.this, WizardStartActivity.class));
             }
         });
         recogniseHandler = new RecogniseHandler(this);
