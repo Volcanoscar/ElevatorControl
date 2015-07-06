@@ -35,14 +35,16 @@ public class WizardContentFragment extends Fragment {
         int layout = R.layout.fragment_not_found;
         switch (tabIndex) {
             case 0:
-                layout = R.layout.configuration_sub_common;
+                layout = R.layout.wizard_step1_tune;
                 break;
             case 1:
-                layout = R.layout.configuration_sub_specialist;
+                layout = R.layout.wizard_step2_well;
                 break;
             case 2:
-                layout = R.layout.configuration_tab_setting;
+                layout = R.layout.wizard_step3_service;
                 break;
+            case 3:
+                layout = R.layout.wizard_step4_weigh;
         }
         wizardContentFragment.layoutId = layout;
         return wizardContentFragment;

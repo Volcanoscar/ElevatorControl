@@ -103,8 +103,8 @@
         android:id="@+id/btn_start_debug"
         android:layout_gravity="center_horizontal"
         android:text="进入调试"
-        android:minWidth="180dp"
-        android:textSize="12pt"
+        android:minWidth="120dp"
+        android:textSize="15sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

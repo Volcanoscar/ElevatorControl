@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout android:id="@+id/table1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        >
+
+        <TableRow android:padding="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+            android:gravity="left"
+            style="@android:style/TextAppearance"
+            android:text="1.设置铭牌参数与编码器参数"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btn_brand_parameter"
+                android:layout_gravity="center_horizontal"
+                android:text="设置"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </TableRow>
+
+        <TableRow android:padding="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:gravity="left"
+                style="@android:style/TextAppearance"
+                android:text="2.控制命令、运行方向、调谐命令参数设置"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btn_control_parameter"
+                android:layout_gravity="center_horizontal"
+                android:text="设置"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </TableRow>
+
+        <TextView
+            android:gravity="left"
+            style="@android:style/TextAppearance"
+            android:text="小键盘上显示TUNE手动进行慢车运行直到调谐结束"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="60dp"/>
+    </TableLayout>
+
+    <TextView
+        android:gravity="left"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        style="@android:style/TextAppearance"
+        android:text="如果为空载或异步机，请点击运行按钮，否者请手动进行检修运行"
+        android:layout_height="wrap_content"
+        android:layout_width="280dp"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:height="50dp"
+        android:minHeight="120dp"
+        android:orientation="vertical">
+        <TextView
+            android:gravity="left"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            style="@android:style/TextAppearance"
+            android:textSize="18sp"
+            android:text="调谐参数显示："
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_start_debug"
+        android:layout_gravity="center_horizontal"
+        android:text="运行"
+        android:layout_marginTop="10dp"
+        android:minWidth="120dp"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btn_next_step"
+        android:layout_gravity="center_horizontal"
+        android:text="下一步"
+        android:minWidth="120dp"
+        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

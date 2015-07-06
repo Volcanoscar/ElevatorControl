@@ -48,4 +48,14 @@
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>
     </style>
 
+    <style name="ButtonStyle1">
+        <item name="android:background">#1e67c0</item>
+        <item name="android:textSize">12pt</item>
+    </style>
+
+    <style name="ButtonStyle2">
+        <item name="android:background">#3eadeb</item>
+        <item name="android:textSize">12pt</item>
+    </style>
+
 </resources>
