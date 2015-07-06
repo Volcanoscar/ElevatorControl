@@ -32,6 +32,7 @@ public class WizardMainAdapter extends FragmentPagerAdapter {
             WizardContentFragment wizardFragment = WizardContentFragment
                     .newInstance(position, fragmentActivity);
             mFragments.add(wizardFragment);
+            //constructor fragment detail
             return wizardFragment;
         } else {
             return mFragments.get(position);
