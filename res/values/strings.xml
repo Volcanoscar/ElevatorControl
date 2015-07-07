@@ -56,6 +56,10 @@
     <string name="bluetooth_connect_exception_title">蓝牙设备异常</string>
     <string name="bluetooth_connect_exception_message">蓝牙设备连接异常，请选择是否重试。</string>
 
+    <string-array name="exit_multi_choice">
+        <item>关闭蓝牙</item>
+    </string-array>
+
     <string name="view_detail_text">查看详细-></string>
 
     <string name="read_data_error">读取列表信息错误</string>
