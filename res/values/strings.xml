@@ -580,6 +580,6 @@
     <string name="tune_tint_1">小键盘上显示TUNE手动进行慢车运行直到调谐结束</string>
     <string name="tune_tint_2">如果为空载或异步机，请点击运行按钮，否者请手动进行检修运行</string>
     <string name="lbl_show_tune_result">调谐参数显示：</string>
-    <string name="run">运行</string>
+    <string name="run">运行tune</string>
     <string name="next_step">下一步</string>
 </resources>
