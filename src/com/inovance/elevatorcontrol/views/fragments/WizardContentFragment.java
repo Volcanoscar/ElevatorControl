@@ -1,11 +1,13 @@
 package com.inovance.elevatorcontrol.views.fragments;
 
-import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.inovance.elevatorcontrol.R;
 
@@ -55,11 +57,10 @@ public class WizardContentFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         View view = getLayoutInflater(savedInstanceState).inflate(layoutId, container, false);
-//        switch (tabIndex) {
-//            case 0:
-//                commonListView = (ListView)view.findViewById(R.id.common_list);
-//                initCommonListView();
-//                break;
+        switch (tabIndex) {
+            case 0:
+                initTuneView(view);
+                break;
 //            case 1:
 //                speciaListView = (ListView)view.findViewById(R.id.spec_list);
 //                initSpecialistListView();
@@ -68,8 +69,27 @@ public class WizardContentFragment extends Fragment {
 //                groupListView = (ListView) view.findViewById(R.id.settings_list);
 //                initGroupListView();
 //                break;
-//        }
+        }
         return view;
+    }
+
+    private void initTuneView(View view)
+    {
+        Button btnStart = (Button)view.findViewById(R.id.btn_start_run);
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Please waiting 20-30s for tune result.", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        Button btnNextStep = (Button)view.findViewById(R.id.btn_next_step);
+        btnNextStep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    Toast.makeText(getActivity(), "slide to next view", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 }

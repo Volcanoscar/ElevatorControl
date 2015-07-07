@@ -559,6 +559,23 @@
         <item>程序申请</item>
     </string-array>
 
+    <!--wizard strings-->
     <string name="wizard_title">引导调试</string>
     <string name="start_tips_text">调试前，请设好下列功能</string>
+    <string name="enable_outside_call">0.外招有效</string>
+    <string name="disable_outside_call">1.禁止外招</string>
+    <string name="lbl_f7_05">F7&#8211;05 开门使能</string>
+    <string name="lbl_f7_04">F7&#8211;04 外招使能</string>
+    <string name="enable_open_door">0.允许开门</string>
+    <string name="disable_open_door">1.禁止开门</string>
+    <string name="lbl_f7_06">F7-06 超载使能</string>
+    <string name="disable_overload">0.禁止超载运行</string>
+    <string name="enable_overload">1.允许超载运行</string>
+    <string name="lbl_set_brand">1.设置铭牌参数与编码器参数</string>
+    <string name="lbl_control_command">2.控制命令、运行方向、调谐命令参数设置</string>
+    <string name="tune_tint_1">小键盘上显示TUNE手动进行慢车运行直到调谐结束</string>
+    <string name="tune_tint_2">如果为空载或异步机，请点击运行按钮，否者请手动进行检修运行</string>
+    <string name="lbl_show_tune_result">调谐参数显示：</string>
+    <string name="run">运行</string>
+    <string name="next_step">下一步</string>
 </resources>

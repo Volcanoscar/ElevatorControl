@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:gravity="center"
             style="@android:style/TextAppearance"
             android:background="#80000000"
             android:textColor="#ffffffff"
@@ -23,14 +22,14 @@
     <TableLayout android:id="@+id/table1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
+        android:padding="10dp"
         android:gravity="center"
         >
         <TextView
             android:gravity="left"
             style="@android:style/TextAppearance"
             android:id="@+id/lbl_f7_04"
-            android:text="F7-04 外招使能"
+            android:text="@string/lbl_f7_04"
             android:layout_marginLeft="10dp"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"/>
@@ -39,14 +38,14 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.外招有效"
+                android:text="@string/enable_outside_call"
                 android:id="@+id/rdoEnableCall"
                 />
             <RadioButton
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1.禁止外招"
+                android:text="@string/disable_outside_call"
                 android:id="@+id/rdoDisableCall" />
         </TableRow>
 
@@ -54,7 +53,7 @@
             android:gravity="left"
             style="@android:style/TextAppearance"
             android:id="@+id/lbl_f7_05"
-            android:text="F7-05 开门使能"
+            android:text="@string/lbl_f7_05"
             android:layout_marginLeft="10dp"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"/>
@@ -62,14 +61,14 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.允许开门"
+                android:text="@string/enable_open_door"
                 android:id="@+id/rdoEnableOpen"
                 />
             <RadioButton
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1.禁止开门"
+                android:text="@string/disable_open_door"
                 android:id="@+id/rdoDisableOpen" />
         </TableRow>
 
@@ -77,7 +76,7 @@
             android:gravity="left"
             style="@android:style/TextAppearance"
             android:id="@+id/lbl_f7_06"
-            android:text="F7-06 超载使能"
+            android:text="@string/lbl_f7_06"
             android:layout_marginLeft="10dp"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"/>
@@ -85,14 +84,14 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.禁止超载运行"
+                android:text="@string/disable_overload"
                 android:id="@+id/radioButton4"
                 />
             <RadioButton
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1.允许超载运行"
+                android:text="@string/enable_overload"
                 android:id="@+id/radioButton5" />
         </TableRow>
 
