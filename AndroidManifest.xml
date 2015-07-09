@@ -209,5 +209,10 @@
             android:windowSoftInputMode="stateAlwaysVisible" />
         <activity android:name=".activities.SlideMenu.Wizard.WizardStartActivity" />
         <activity android:name=".activities.SlideMenu.Wizard.WizardMainActivity" />
+        <activity
+            android:name=".activities.NavigationMainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Fullscreen"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
     </application>
 </manifest>
