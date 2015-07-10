@@ -15,12 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,23 +31,19 @@ import com.inovance.elevatorcontrol.activities.MainTab.ConfigurationActivity;
 import com.inovance.elevatorcontrol.activities.MainTab.HomeActivity;
 import com.inovance.elevatorcontrol.activities.MainTab.TroubleAnalyzeActivity;
 import com.inovance.elevatorcontrol.activities.SlideMenu.Firmware.FirmwareManageActivity;
-import com.inovance.elevatorcontrol.activities.SlideMenu.Help.ShortcutSettingActivity;
 import com.inovance.elevatorcontrol.activities.SlideMenu.Wizard.WizardStartActivity;
 import com.inovance.elevatorcontrol.cache.ValueCache;
 import com.inovance.elevatorcontrol.config.ApplicationConfig;
 import com.inovance.elevatorcontrol.config.ParameterUpdateTool;
 import com.inovance.elevatorcontrol.daos.DeviceDao;
-import com.inovance.elevatorcontrol.daos.ShortcutDao;
 import com.inovance.elevatorcontrol.handlers.MessageHandler;
 import com.inovance.elevatorcontrol.handlers.SearchBluetoothHandler;
 import com.inovance.elevatorcontrol.handlers.UnlockHandler;
 import com.inovance.elevatorcontrol.models.CommunicationCode;
 import com.inovance.elevatorcontrol.models.Device;
 import com.inovance.elevatorcontrol.models.NormalDevice;
-import com.inovance.elevatorcontrol.models.Shortcut;
 import com.inovance.elevatorcontrol.models.SpecialDevice;
 import com.inovance.elevatorcontrol.utils.ParseSerialsUtils;
-import com.inovance.elevatorcontrol.views.component.SlidingLayout;
 import com.inovance.elevatorcontrol.views.customspinner.NoDefaultSpinner;
 import com.inovance.elevatorcontrol.views.dialogs.UtilsDialog;
 import com.inovance.elevatorcontrol.web.WebInterface;
@@ -62,7 +56,6 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -79,11 +72,6 @@ import butterknife.Views;
 public class NavigationTabActivity extends TabActivity implements Runnable, WebInterface.OnRequestListener, ParameterUpdateTool.OnCheckResultListener {
 
     private static final String TAG = NavigationTabActivity.class.getSimpleName();
-
-    /**
-     * 侧滑布局对象，用于通过手指滑动将左侧的菜单布局进行显示或隐藏。
-     */
-    private SlidingLayout slidingLayout;
 
     /**
      * 优先显示的设备名称
@@ -303,17 +291,10 @@ public class NavigationTabActivity extends TabActivity implements Runnable, WebI
         Views.inject(this);
         initTabs();
 
-        slidingLayout = (SlidingLayout) findViewById(R.id.slidingLayout);
-        slidingLayout.setScrollEvent(this.getTabHost());
         menuButton = (ImageButton) findViewById(R.id.menuButton);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (slidingLayout.isLeftLayoutVisible()) {
-                    slidingLayout.scrollToRightLayout();
-                } else {
-                    slidingLayout.scrollToLeftLayout();
-                }
                 startActivity(new Intent(NavigationTabActivity.this, WizardStartActivity.class));
             }
         });

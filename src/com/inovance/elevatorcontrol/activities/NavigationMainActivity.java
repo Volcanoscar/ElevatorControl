@@ -10,6 +10,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.inovance.elevatorcontrol.R;
+import com.inovance.elevatorcontrol.views.fragments.LeftMenuFragment;
 import com.inovance.elevatorcontrol.views.slidemenu.SlidingMenu;
 
 /**
@@ -26,22 +27,22 @@ public class NavigationMainActivity extends FragmentActivity {
     private LayoutInflater layoutInflater;
 
     //定义数组来存放Fragment界面
-    private Class fragmentArray[] = {FragmentPage1.class,FragmentPage2.class,FragmentPage3.class,FragmentPage4.class,FragmentPage5.class};
+    private Class fragmentArray[] = {FragmentPage1.class,FragmentPage2.class,FragmentPage3.class};
 
     //定义数组来存放按钮图片
-    private int mImageViewArray[] = {R.drawable.tab_home_btn,R.drawable.tab_message_btn,R.drawable.tab_selfinfo_btn,
-            R.drawable.tab_square_btn,R.drawable.tab_more_btn};
+    private int mImageViewArray[] = {R.drawable.tab_home_btn,R.drawable.tab_message_btn,R.drawable.tab_selfinfo_btn};
 
     //Tab选项卡的文字
-    private String mTextviewArray[] = {"首页", "@我", "消息", "广场", "资料"};
+    private String mTextviewArray[];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Content view for main page
         setContentView(R.layout.activity_navigation_main);
-
         initMainTab();
+
+        //Slide menu for main page
         initSlidingMenu();
     }
 
@@ -49,22 +50,23 @@ public class NavigationMainActivity extends FragmentActivity {
      * 初始化组件
      */
     private void initMainTab(){
-        //???????
+        //初始化布局
         layoutInflater = LayoutInflater.from(this);
 
-        //???TabHost??????TabHost
+        //初始化FragmentTabHost对象
         mTabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.content);
+        mTextviewArray = getResources().getStringArray(R.array.navigation_tab_text);
 
-        //???fragment?????
+        //加载fragment页面
         int count = fragmentArray.length;
 
         for(int i = 0; i < count; i++){
-            //?????Tab???????????????????
+            //为每一个Tab按钮设置图标、文字和内容
             TabHost.TabSpec tabSpec = mTabHost.newTabSpec(mTextviewArray[i]).setIndicator(getTabItemView(i));
-            //??Tab???????Tab?????
+            //将Tab按钮添加进Tab选项卡中
             mTabHost.addTab(tabSpec, fragmentArray[i], null);
-            //????Tab????????
+            //设置Tab按钮的背景
             mTabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.selector_tab_background);
         }
     }
@@ -86,7 +88,6 @@ public class NavigationMainActivity extends FragmentActivity {
         return view;
     }
 
-
     private void initSlidingMenu() {
         //Slide menu for main page
         menu = new SlidingMenu(this);
@@ -94,10 +95,19 @@ public class NavigationMainActivity extends FragmentActivity {
         menu.setShadowWidthRes(R.dimen.shadow_width);
         menu.setShadowDrawable(R.drawable.shadow);
         menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        menu.setFadeEnabled(true);
         menu.setFadeDegree(0.35f);
+        //设置滑动时拖拽效果
+        menu.setBehindScrollScale(0);
         menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        menu.setBehindWidth(300);
 
         menu.setMenu(R.layout.menu_frame);
-        getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, new SampleListFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, new LeftMenuFragment()).commit();
+    }
+
+    public void hideMenu()
+    {
+        menu.showContent();
     }
 }

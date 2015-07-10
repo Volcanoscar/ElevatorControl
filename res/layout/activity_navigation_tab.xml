@@ -1,28 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.inovance.elevatorcontrol.views.component.SlidingLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/slidingLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:id="@+id/menu"
-        android:layout_width="270dip"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:background="#00ccff"
-        android:visibility="invisible" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Menu Content"
-            android:textColor="#000000"
-            android:textSize="28sp" />
-    </RelativeLayout>
-
-    <LinearLayout
+<LinearLayout
         android:id="@+id/content"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -148,5 +124,4 @@
                     android:showDividers="none" />
             </LinearLayout>
         </TabHost>
-    </LinearLayout>
-</com.inovance.elevatorcontrol.views.component.SlidingLayout>
+</LinearLayout>

@@ -12,10 +12,6 @@ import android.widget.TextView;
 
 import com.inovance.elevatorcontrol.R;
 
-/**
- * @author yangyu
- *	�����������б�Fragment��������ʾ�����˵��򿪺������
- */
 public class SampleListFragment extends ListFragment {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

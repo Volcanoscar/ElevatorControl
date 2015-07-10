@@ -3,6 +3,7 @@ package com.inovance.elevatorcontrol.activities.SlideMenu.Help;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -28,6 +29,8 @@ public class HelpSystemActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
         overridePendingTransition(R.anim.activity_open_animation, R.anim.activity_close_animation);
         setContentView(R.layout.activity_help_system);
         Views.inject(this);
@@ -78,6 +81,17 @@ public class HelpSystemActivity extends Activity {
     protected void onPause() {
         super.onPause();
         overridePendingTransition(R.anim.activity_open_animation, R.anim.activity_close_animation);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                setResult(RESULT_OK);
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

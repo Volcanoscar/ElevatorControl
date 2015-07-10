@@ -491,6 +491,15 @@
         <item>0x30f:数据帧帧号错误</item>
     </string-array>
 
+    <string-array name="left_menu_text">
+        <item>引导调试</item>
+        <item>连接设备</item>
+        <item>招梯测试</item>
+        <item>参数拷贝</item>
+        <item>程序管理</item>
+        <item>帮助</item>
+    </string-array>
+
     <!-- //////////////////////////////////// 标签选项卡 START ////////////////////////////////// -->
     <!-- 主标签页选项卡 -->
     <string-array name="navigation_tab_text">

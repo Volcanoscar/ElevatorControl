@@ -4,6 +4,7 @@ package com.inovance.elevatorcontrol.activities.SlideMenu.Wizard;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 
 import com.inovance.elevatorcontrol.R;
 import com.inovance.elevatorcontrol.adapters.WizardMainAdapter;
@@ -45,6 +46,9 @@ public class WizardMainActivity extends FragmentActivity implements Runnable{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.wizard_title);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
         setContentView(R.layout.activity_wizard_main);
         Views.inject(this);
 
@@ -74,5 +78,16 @@ public class WizardMainActivity extends FragmentActivity implements Runnable{
     @Override
     public void run() {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                setResult(RESULT_OK);
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
