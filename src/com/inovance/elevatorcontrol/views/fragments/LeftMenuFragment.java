@@ -31,6 +31,7 @@ import java.util.List;
  */
 public class LeftMenuFragment extends Fragment {
 
+    private NavigationMainActivity mainActivity;
     private List<SlideMenuItem> menuItemList = new ArrayList<SlideMenuItem>();
     private Class[] menuClassList = {
                             WizardStartActivity.class, //Òýµ¼µ÷ÊÔ
@@ -47,6 +48,7 @@ public class LeftMenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        mainActivity = (NavigationMainActivity)getActivity();
         View view = getLayoutInflater(savedInstanceState).inflate(R.layout.menu_left, container, false);
 
         initMenus();
@@ -56,10 +58,8 @@ public class LeftMenuFragment extends Fragment {
         menuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                NavigationMainActivity mainActivity = (NavigationMainActivity)getActivity();
-                mainActivity.hideMenu();
                 SlideMenuItem item = menuItemList.get(i);
-                startActivity(new Intent(getActivity(), item.getFragmentClass()));
+                startActivity(new Intent(mainActivity, item.getFragmentClass()));
             }
         });
         return view;

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ public class NavigationMainActivity extends FragmentActivity {
     private LayoutInflater layoutInflater;
 
     //定义数组来存放Fragment界面
+    //private Class fragmentArray[] = {ConfigurationActivity.class,HomeActivity.class,TroubleAnalyzeActivity.class};
     private Class fragmentArray[] = {FragmentPage1.class,FragmentPage2.class,FragmentPage3.class};
 
     //定义数组来存放按钮图片
@@ -34,6 +36,10 @@ public class NavigationMainActivity extends FragmentActivity {
 
     //Tab选项卡的文字
     private String mTextviewArray[];
+    /**
+     * menu按钮，点击按钮展示左侧布局，再点击一次隐藏左侧布局。
+     */
+    private ImageButton menuButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,17 @@ public class NavigationMainActivity extends FragmentActivity {
 
         //Slide menu for main page
         initSlidingMenu();
+
+        menuButton = (ImageButton) findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (menu.isMenuShowing())
+                    menu.showContent();
+                else
+                    menu.showMenu();
+            }
+        });
     }
 
     /**
@@ -97,8 +114,6 @@ public class NavigationMainActivity extends FragmentActivity {
         menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
         menu.setFadeEnabled(true);
         menu.setFadeDegree(0.35f);
-        //设置滑动时拖拽效果
-        menu.setBehindScrollScale(0);
         menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
         menu.setBehindWidth(300);
 
@@ -106,8 +121,10 @@ public class NavigationMainActivity extends FragmentActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, new LeftMenuFragment()).commit();
     }
 
-    public void hideMenu()
-    {
-        menu.showContent();
+    @Override
+    protected void onPause() {
+        //menu.showContent();
+        super.onPause();
     }
+
 }
