@@ -6,8 +6,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,15 +51,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
-import butterknife.InjectView;
-import butterknife.Views;
-
 /**
  * 标签卡 电梯调试
  *
  * @author jch
  */
-public class ConfigTabFragment extends Activity implements Runnable {
+public class ConfigTabFragment extends Fragment implements Runnable {
 
     private static final String TAG = ConfigTabFragment.class.getSimpleName();
 
@@ -291,13 +292,11 @@ public class ConfigTabFragment extends Activity implements Runnable {
     /**
      * View Pager
      */
-    @InjectView(R.id.pager)
     public ViewPager pager;
 
     /**
      * View Pager Indicator
      */
-    @InjectView(R.id.indicator)
     protected TabPageIndicator indicator;
 
     /**
@@ -315,68 +314,77 @@ public class ConfigTabFragment extends Activity implements Runnable {
      */
     public List<RealTimeMonitor> showStateList = new ArrayList<RealTimeMonitor>();
 
+    FragmentActivity parentActivity;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_configuration);
-        Views.inject(this);
-        // 从数据库加载数据
-        reloadDataFromDataBase();
-        ////////////////////mConfigurationAdapter = new ConfigurationAdapter(this, showStateList);
-        // 同步高压输入端子状态
-        getHVInputTerminalValueHandler = new GetHVInputTerminalValueHandler(this);
-        getHVInputTerminalStateHandler = new GetHVInputTerminalStateHandler(this);
-        // 同步输入端子状态
-        getInputTerminalValueHandler = new GetInputTerminalValueHandler(this);
-        getInputTerminalStateHandler = new GetInputTerminalStateHandler(this);
-        // 同步输出端子状态
-        getOutputTerminalValueHandler = new GetOutputTerminalValueHandler(this);
-        getOutputTerminalStateHandler = new GetOutputTerminalStateHandler(this);
-        // 同步系统状态
-        getSystemStateHandler = new GetSystemStateHandler(this);
-        // 同步轿顶板输入状态
-        getCeilingInputStateHandler = new GetCeilingInputStateHandler(this);
-        // 同步轿顶板输出状态
-        getCeilingOutputStateHandler = new GetCeilingOutputStateHandler(this);
-        // 读取电梯状态
-        getElevatorStatusHandler = new ElevatorStatusHandler(this);
-        // 恢复出厂设置
-        restoreFactoryHandler = new RestoreFactoryHandler(this);
+        parentActivity = getActivity();
+        parentActivity.setContentView(R.layout.activity_configuration);
+//        pager = (ViewPager)parentActivity.findViewById(R.id.pager);
+//        indicator = (TabPageIndicator)parentActivity.findViewById(R.id.indicator);
+//        // 从数据库加载数据
+//        reloadDataFromDataBase();
+//        ////////////////////mConfigurationAdapter = new ConfigurationAdapter(parentActivity, showStateList);
+//        // 同步高压输入端子状态
+//        getHVInputTerminalValueHandler = new GetHVInputTerminalValueHandler(parentActivity);
+//        getHVInputTerminalStateHandler = new GetHVInputTerminalStateHandler(parentActivity);
+//        // 同步输入端子状态
+//        getInputTerminalValueHandler = new GetInputTerminalValueHandler(parentActivity);
+//        getInputTerminalStateHandler = new GetInputTerminalStateHandler(parentActivity);
+//        // 同步输出端子状态
+//        getOutputTerminalValueHandler = new GetOutputTerminalValueHandler(parentActivity);
+//        getOutputTerminalStateHandler = new GetOutputTerminalStateHandler(parentActivity);
+//        // 同步系统状态
+//        getSystemStateHandler = new GetSystemStateHandler(parentActivity);
+//        // 同步轿顶板输入状态
+//        getCeilingInputStateHandler = new GetCeilingInputStateHandler(parentActivity);
+//        // 同步轿顶板输出状态
+//        getCeilingOutputStateHandler = new GetCeilingOutputStateHandler(parentActivity);
+//        // 读取电梯状态
+//        getElevatorStatusHandler = new ElevatorStatusHandler(parentActivity);
+//        // 恢复出厂设置
+//        restoreFactoryHandler = new RestoreFactoryHandler(parentActivity);
+//
+//        pager.setAdapter(mConfigurationAdapter);
+//        pager.setOffscreenPageLimit(3);
+//        indicator.setViewPager(pager);
+//        configurationHandler = new ConfigurationHandler(parentActivity);
+//        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrollStateChanged(int arg0) {
+//
+//            }
+//
+//            @Override
+//            public void onPageScrolled(int arg0, float arg1, int arg2) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int index) {
+//                pageIndex = index;
+//            }
+//        });
+//        // 同步实时状态
+//        syncTask = new Runnable() {
+//            @Override
+//            public void run() {
+//                if (isRunning) {
+//                    if (BluetoothTool.getInstance().isPrepared()) {
+//                        if (!isSyncing) {
+//                            pool.execute(ConfigTabFragment.this);
+//                        }
+//                        syncHandler.postDelayed(syncTask, SYNC_TIME);
+//                    }
+//                }
+//            }
+//        };
+    }
 
-        pager.setAdapter(mConfigurationAdapter);
-        pager.setOffscreenPageLimit(3);
-        indicator.setViewPager(pager);
-        configurationHandler = new ConfigurationHandler(this);
-        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-
-            }
-
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-            }
-
-            @Override
-            public void onPageSelected(int index) {
-                pageIndex = index;
-            }
-        });
-        // 同步实时状态
-        syncTask = new Runnable() {
-            @Override
-            public void run() {
-                if (isRunning) {
-                    if (BluetoothTool.getInstance().isPrepared()) {
-                        if (!isSyncing) {
-                            pool.execute(ConfigTabFragment.this);
-                        }
-                        syncHandler.postDelayed(syncTask, SYNC_TIME);
-                    }
-                }
-            }
-        };
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     private class SortComparator implements Comparator<RealTimeMonitor> {
@@ -395,7 +403,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (BluetoothTool.getInstance().isPrepared()) {
             isRunning = true;
@@ -406,7 +414,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         isRunning = false;
     }
@@ -435,7 +443,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
         getCeilingOutputStateCommunications = null;
         getElevatorStateCommunications = null;
         restoreElevatorCommunications = null;
-        runOnUiThread(new Runnable() {
+        parentActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 ConfigurationFragment monitorFragment = mConfigurationAdapter.getItem(0);
@@ -457,7 +465,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
      * 重新从数据库加载数据
      */
     private void reloadDataFromDataBase() {
-        talkStateList = RealTimeMonitorDao.findAllByStateIDs(this, ApplicationConfig.MonitorStateCode);
+        talkStateList = RealTimeMonitorDao.findAllByStateIDs(parentActivity, ApplicationConfig.MonitorStateCode);
         // 输入端子 ID
         int inputStateID = ApplicationConfig.MonitorStateCode[5];
         // 输出端子 ID
@@ -499,7 +507,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
      */
     private void getElevatorState() {
         if (getElevatorStateCommunications == null) {
-            final RealTimeMonitor monitor = RealTimeMonitorDao.findByStateID(this, ApplicationConfig.RunningStatusType);
+            final RealTimeMonitor monitor = RealTimeMonitorDao.findByStateID(parentActivity, ApplicationConfig.RunningStatusType);
             if (monitor != null) {
                 getElevatorStateCommunications = new BluetoothTalk[]{
                         new BluetoothTalk() {
@@ -564,10 +572,10 @@ public class ConfigTabFragment extends Activity implements Runnable {
         } else {
             isSyncing = false;
             currentTask = NO_TASK;
-            runOnUiThread(new Runnable() {
+            parentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), R.string.cannot_restore_elevator_factory, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(parentActivity.getApplicationContext(), R.string.cannot_restore_elevator_factory, Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -578,7 +586,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
      */
     private void startRestoreElevatorFactory() {
         if (restoreElevatorCommunications == null) {
-            final RealTimeMonitor monitor = RealTimeMonitorDao.findByStateID(this, ApplicationConfig.RestoreFactoryStateCode);
+            final RealTimeMonitor monitor = RealTimeMonitorDao.findByStateID(parentActivity, ApplicationConfig.RestoreFactoryStateCode);
             if (monitor != null) {
                 restoreElevatorCommunications = new BluetoothTalk[]{
                         new BluetoothTalk() {
@@ -701,7 +709,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
      */
     public void getHVInputTerminalValue() {
         if (getHVInputTerminalValueCommunications == null) {
-            final RealTimeMonitor monitor = RealTimeMonitorDao.findByStateID(this, ApplicationConfig.MonitorStateCode[14]);
+            final RealTimeMonitor monitor = RealTimeMonitorDao.findByStateID(parentActivity, ApplicationConfig.MonitorStateCode[14]);
             if (monitor != null) {
                 getHVInputTerminalValueCommunications = new BluetoothTalk[1];
                 getHVInputTerminalValueCommunications[0] = new BluetoothTalk() {
@@ -754,7 +762,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
      */
     private void getHVInputTerminalState() {
         if (getHVInputTerminalStateCommunications == null) {
-            final List<ParameterSettings> terminalList = ParameterSettingsDao.findByType(this, ApplicationConfig.HVInputTerminalType);
+            final List<ParameterSettings> terminalList = ParameterSettingsDao.findByType(parentActivity, ApplicationConfig.HVInputTerminalType);
             final int size = terminalList.size();
             final int count = size <= 10 ? 1 : ((size - size % 10) / 10 + (size % 10 == 0 ? 0 : 1));
             getHVInputTerminalStateCommunications = new BluetoothTalk[count];
@@ -838,7 +846,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
      */
     public void getInputTerminalValue() {
         if (getInputTerminalValueCommunications == null) {
-            List<RealTimeMonitor> monitorList = RealTimeMonitorDao.findAllByStateID(this,
+            List<RealTimeMonitor> monitorList = RealTimeMonitorDao.findAllByStateID(parentActivity,
                     ApplicationConfig.MonitorStateCode[5]);
             Collections.sort(monitorList, new SortComparator());
             int size = monitorList.size();
@@ -896,7 +904,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
      */
     private void getInputTerminalState() {
         if (getInputTerminalStateCommunications == null) {
-            final List<ParameterSettings> terminalList = ParameterSettingsDao.findByType(this,
+            final List<ParameterSettings> terminalList = ParameterSettingsDao.findByType(parentActivity,
                     ApplicationConfig.InputTerminalType);
             final int size = terminalList.size();
             final int count = size <= 10 ? 1 : ((size - size % 10) / 10 + (size % 10 == 0 ? 0 : 1));
@@ -981,7 +989,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
      */
     public void getOutputTerminalValue() {
         if (getOutputTerminalValueCommunications == null) {
-            List<RealTimeMonitor> monitorList = RealTimeMonitorDao.findAllByStateID(this,
+            List<RealTimeMonitor> monitorList = RealTimeMonitorDao.findAllByStateID(parentActivity,
                     ApplicationConfig.MonitorStateCode[6]);
             Collections.sort(monitorList, new SortComparator());
             int size = monitorList.size();
@@ -1039,7 +1047,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
      */
     private void getOutputTerminalState() {
         if (getOutputTerminalStateCommunications == null) {
-            final List<ParameterSettings> terminalList = ParameterSettingsDao.findByType(this, ApplicationConfig.OutputTerminalType);
+            final List<ParameterSettings> terminalList = ParameterSettingsDao.findByType(parentActivity, ApplicationConfig.OutputTerminalType);
             final int size = terminalList.size();
             final int count = size <= 10 ? 1 : ((size - size % 10) / 10 + (size % 10 == 0 ? 0 : 1));
             getOutputTerminalStateCommunications = new BluetoothTalk[count];
@@ -1111,7 +1119,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
      */
     private void getSystemState() {
         if (getSystemStateCommunications == null) {
-            final RealTimeMonitor monitor = RealTimeMonitorDao.findByStateID(this, ApplicationConfig.MonitorStateCode[12]);
+            final RealTimeMonitor monitor = RealTimeMonitorDao.findByStateID(parentActivity, ApplicationConfig.MonitorStateCode[12]);
             if (monitor != null) {
                 getSystemStateCommunications = new BluetoothTalk[]{new BluetoothTalk() {
                     @Override
@@ -1174,7 +1182,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
      */
     private void getCeilingInputState() {
         if (getCeilingInputStateCommunications == null) {
-            final RealTimeMonitor monitor = RealTimeMonitorDao.findByStateID(this, ApplicationConfig.MonitorStateCode[10]);
+            final RealTimeMonitor monitor = RealTimeMonitorDao.findByStateID(parentActivity, ApplicationConfig.MonitorStateCode[10]);
             if (monitor != null) {
                 getCeilingInputStateCommunications = new BluetoothTalk[]{new BluetoothTalk() {
                     @Override
@@ -1237,7 +1245,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
      */
     private void getCeilingOutputState() {
         if (getCeilingOutputStateCommunications == null) {
-            final RealTimeMonitor monitor = RealTimeMonitorDao.findByStateID(this, ApplicationConfig.MonitorStateCode[11]);
+            final RealTimeMonitor monitor = RealTimeMonitorDao.findByStateID(parentActivity, ApplicationConfig.MonitorStateCode[11]);
             if (monitor != null) {
                 getCeilingOutputStateCommunications = new BluetoothTalk[]{new BluetoothTalk() {
                     @Override
@@ -1299,10 +1307,10 @@ public class ConfigTabFragment extends Activity implements Runnable {
      * 显示端子状态对话框
      */
     private void showTerminalStatusDialog(RealTimeMonitor monitor) {
-        View dialogView = getLayoutInflater().inflate(R.layout.terminal_status_dialog, null);
+        View dialogView = parentActivity.getLayoutInflater().inflate(R.layout.terminal_status_dialog, null);
         waitTextView = (TextView) dialogView.findViewById(R.id.wait_text);
         terminalListView = (ListView) dialogView.findViewById(R.id.list_view);
-        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigTabFragment.this,
+        AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity,
                 R.style.GlobalDialogStyle)
                 .setView(dialogView)
                 .setTitle(monitor.getName())
@@ -1452,7 +1460,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
                     }
                     // 更新 AlertDialog ListView
                     if (statusAdapter == null) {
-                        statusAdapter = new ParameterStatusAdapter(ConfigTabFragment.this, statusList);
+                        statusAdapter = new ParameterStatusAdapter(parentActivity, statusList);
                         ConfigTabFragment.this.terminalListView.setAdapter(statusAdapter);
                         ConfigTabFragment.this.waitTextView.setVisibility(View.GONE);
                         ConfigTabFragment.this.terminalListView.setVisibility(View.VISIBLE);
@@ -1533,7 +1541,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
                             .getInputTerminalStateList(bitValues, settingsList);
                     // 更新 AlertDialog ListView
                     if (statusAdapter == null) {
-                        statusAdapter = new ParameterStatusAdapter(ConfigTabFragment.this, statusList);
+                        statusAdapter = new ParameterStatusAdapter(parentActivity, statusList);
                         ConfigTabFragment.this.terminalListView.setAdapter(statusAdapter);
                         ConfigTabFragment.this.waitTextView.setVisibility(View.GONE);
                         ConfigTabFragment.this.terminalListView.setVisibility(View.VISIBLE);
@@ -1606,7 +1614,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
                             .getOutputTerminalStateList(bitValues, settingsList);
                     // 更新 AlertDialog ListView
                     if (statusAdapter == null) {
-                        statusAdapter = new ParameterStatusAdapter(ConfigTabFragment.this, statusList);
+                        statusAdapter = new ParameterStatusAdapter(parentActivity, statusList);
                         ConfigTabFragment.this.terminalListView.setAdapter(statusAdapter);
                         ConfigTabFragment.this.waitTextView.setVisibility(View.GONE);
                         ConfigTabFragment.this.terminalListView.setVisibility(View.VISIBLE);
@@ -1831,10 +1839,10 @@ public class ConfigTabFragment extends Activity implements Runnable {
                 } else {
                     tips = getResources().getString(R.string.restore_factory_failed);
                 }
-                runOnUiThread(new Runnable() {
+                parentActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(ConfigTabFragment.this, tips, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(parentActivity, tips, Toast.LENGTH_SHORT).show();
                     }
                 });
                 isSyncing = false;
@@ -1925,7 +1933,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
                     e.printStackTrace();
                 }
                 if (statusAdapter == null) {
-                    statusAdapter = new ParameterStatusAdapter(ConfigTabFragment.this, statusList);
+                    statusAdapter = new ParameterStatusAdapter(parentActivity, statusList);
                     ConfigTabFragment.this.terminalListView.setAdapter(statusAdapter);
                     ConfigTabFragment.this.waitTextView.setVisibility(View.GONE);
                     ConfigTabFragment.this.terminalListView.setVisibility(View.VISIBLE);
@@ -1997,7 +2005,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
                     e.printStackTrace();
                 }
                 if (statusAdapter == null) {
-                    statusAdapter = new ParameterStatusAdapter(ConfigTabFragment.this, statusList);
+                    statusAdapter = new ParameterStatusAdapter(parentActivity, statusList);
                     ConfigTabFragment.this.terminalListView.setAdapter(statusAdapter);
                     ConfigTabFragment.this.waitTextView.setVisibility(View.GONE);
                     ConfigTabFragment.this.terminalListView.setVisibility(View.VISIBLE);
@@ -2067,7 +2075,7 @@ public class ConfigTabFragment extends Activity implements Runnable {
                     e.printStackTrace();
                 }
                 if (statusAdapter == null) {
-                    statusAdapter = new ParameterStatusAdapter(ConfigTabFragment.this, statusList);
+                    statusAdapter = new ParameterStatusAdapter(parentActivity, statusList);
                     ConfigTabFragment.this.terminalListView.setAdapter(statusAdapter);
                     ConfigTabFragment.this.waitTextView.setVisibility(View.GONE);
                     ConfigTabFragment.this.terminalListView.setVisibility(View.VISIBLE);

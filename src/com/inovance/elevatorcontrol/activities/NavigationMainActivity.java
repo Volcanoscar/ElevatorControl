@@ -11,6 +11,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.inovance.elevatorcontrol.R;
+import com.inovance.elevatorcontrol.activities.MainTab.ConfigTabFragment2;
 import com.inovance.elevatorcontrol.views.fragments.LeftMenuFragment;
 import com.inovance.elevatorcontrol.views.slidemenu.SlidingMenu;
 
@@ -29,7 +30,7 @@ public class NavigationMainActivity extends FragmentActivity {
 
     //定义数组来存放Fragment界面
     //private Class fragmentArray[] = {ConfigurationActivity.class,HomeActivity.class,TroubleAnalyzeActivity.class};
-    private Class fragmentArray[] = {FragmentPage1.class,FragmentPage2.class,FragmentPage3.class};
+    private Class fragmentArray[] = {ConfigTabFragment2.class,FragmentPage2.class,FragmentPage3.class};
 
     //定义数组来存放按钮图片
     private int mImageViewArray[] = {R.drawable.tab_home_btn,R.drawable.tab_message_btn,R.drawable.tab_selfinfo_btn};

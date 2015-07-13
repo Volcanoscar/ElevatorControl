@@ -208,7 +208,7 @@ public class CheckAuthorizationActivity extends Activity implements WebInterface
     private void checkGetDeviceListComplete() {
         if (hasGetNormalDeviceList && hasGetSpecialDeviceList && hasGetSpecialDeviceCodeList) {
             progressView.setVisibility(View.INVISIBLE);
-            startActivity(new Intent(CheckAuthorizationActivity.this, NavigationMainActivity.class));
+            startActivity(new Intent(CheckAuthorizationActivity.this, NavigationTabActivity.class));
         }
     }
 

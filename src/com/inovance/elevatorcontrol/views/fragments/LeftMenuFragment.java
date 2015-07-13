@@ -17,7 +17,7 @@ import com.inovance.elevatorcontrol.R;
 import com.inovance.elevatorcontrol.activities.Common.BluetoothAddressActivity;
 import com.inovance.elevatorcontrol.activities.Common.CallInsideActivity;
 import com.inovance.elevatorcontrol.activities.Common.CallOutsideActivity;
-import com.inovance.elevatorcontrol.activities.NavigationMainActivity;
+import com.inovance.elevatorcontrol.activities.NavigationTabActivity;
 import com.inovance.elevatorcontrol.activities.SlideMenu.Firmware.FirmwareManageActivity;
 import com.inovance.elevatorcontrol.activities.SlideMenu.Help.HelpSystemActivity;
 import com.inovance.elevatorcontrol.activities.SlideMenu.Wizard.WizardStartActivity;
@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class LeftMenuFragment extends Fragment {
 
-    private NavigationMainActivity mainActivity;
+    private NavigationTabActivity mainActivity;
     private List<SlideMenuItem> menuItemList = new ArrayList<SlideMenuItem>();
     private Class[] menuClassList = {
                             WizardStartActivity.class, //Òýµ¼µ÷ÊÔ
@@ -48,7 +48,7 @@ public class LeftMenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        mainActivity = (NavigationMainActivity)getActivity();
+        mainActivity = (NavigationTabActivity)getActivity();
         View view = getLayoutInflater(savedInstanceState).inflate(R.layout.menu_left, container, false);
 
         initMenus();

@@ -68,6 +68,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Fullscreen"
             android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity
+            android:name="com.inovance.elevatorcontrol.activities.NavigationTabActivity2"
+            android:icon="@drawable/ic_elevator_actionbar_white"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Fullscreen"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <!-- 故障分析 -->
         <activity
             android:name=".activities.MainTab.TroubleAnalyzeActivity"
