@@ -1053,31 +1053,32 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
      * 开启 HomeActivity Sync Task
      */
     private void startHomeActivityStatusSyncTask() {
-//        if (hasGetDeviceType) {
-//            switch (getTabHost().getCurrentTab()) {
-//                case 0: {
-//                    if (getCurrentActivity() instanceof TroubleAnalyzeActivity) {
-//                        TroubleAnalyzeActivity troubleAnalyzeActivity = (TroubleAnalyzeActivity) getCurrentActivity();
-//                        troubleAnalyzeActivity.reSyncData();
-//                    }
-//                }
-//                break;
-//                case 1: {
-//                    if (getCurrentActivity() instanceof ConfigurationActivity) {
-//                        ConfigurationActivity configurationActivity = (ConfigurationActivity) getCurrentActivity();
-//                        configurationActivity.reSyncData();
-//                    }
-//                }
-//                break;
-//                case 2: {
-//                    if (getCurrentActivity() instanceof HomeActivity) {
-//                        HomeActivity homeActivity = (HomeActivity) getCurrentActivity();
-//                        homeActivity.reSyncData();
-//                    }
-//                }
-//                break;
-//            }
-//        }
+        if (hasGetDeviceType) {
+            Activity currentActivity = lam.getActivity(tabHost.getCurrentTabTag());
+            switch (tabHost.getCurrentTab()) {
+                case 0: {
+                    if (currentActivity instanceof TroubleAnalyzeActivity) {
+                        TroubleAnalyzeActivity troubleAnalyzeActivity = (TroubleAnalyzeActivity) currentActivity;
+                        troubleAnalyzeActivity.reSyncData();
+                    }
+                }
+                break;
+                case 1: {
+                    if (currentActivity instanceof ConfigurationActivity) {
+                        ConfigurationActivity configurationActivity = (ConfigurationActivity) currentActivity;
+                        configurationActivity.reSyncData();
+                    }
+                }
+                break;
+                case 2: {
+                    if (currentActivity instanceof HomeActivity) {
+                        HomeActivity homeActivity = (HomeActivity) currentActivity;
+                        homeActivity.reSyncData();
+                    }
+                }
+                break;
+            }
+        }
     }
 
     /**

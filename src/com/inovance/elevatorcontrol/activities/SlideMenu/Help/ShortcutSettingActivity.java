@@ -152,8 +152,9 @@ public class ShortcutSettingActivity extends Activity {
         final EditText shortcutName = (EditText) dialogView.findViewById(R.id.shortcut_name);
         final Spinner actionSpinner = (Spinner) dialogView.findViewById(R.id.action_spinner);
         final ArrayList<String> tabs = new ArrayList<String>();
-        Collections.addAll(tabs, troubleAnalyzeTabArray);
         Collections.addAll(tabs, configurationTabArray);
+        Collections.addAll(tabs, configurationTabArray);
+        Collections.addAll(tabs, troubleAnalyzeTabArray);
         Collections.addAll(tabs, firmwareManageTabArray);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,
