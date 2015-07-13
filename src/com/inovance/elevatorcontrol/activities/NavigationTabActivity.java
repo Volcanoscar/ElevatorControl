@@ -35,6 +35,7 @@ import com.inovance.elevatorcontrol.cache.ValueCache;
 import com.inovance.elevatorcontrol.config.ApplicationConfig;
 import com.inovance.elevatorcontrol.config.ParameterUpdateTool;
 import com.inovance.elevatorcontrol.daos.DeviceDao;
+import com.inovance.elevatorcontrol.handlers.MessageHandler;
 import com.inovance.elevatorcontrol.handlers.SearchBluetoothHandler;
 import com.inovance.elevatorcontrol.handlers.UnlockHandler;
 import com.inovance.elevatorcontrol.models.CommunicationCode;
@@ -47,12 +48,14 @@ import com.inovance.elevatorcontrol.views.dialogs.UtilsDialog;
 import com.inovance.elevatorcontrol.views.fragments.LeftMenuFragment;
 import com.inovance.elevatorcontrol.views.slidemenu.SlidingMenu;
 import com.inovance.elevatorcontrol.web.WebInterface;
+import com.inovance.elevatorcontrol.window.CallFloorWindow;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -289,7 +292,7 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         menu.setShadowWidthRes(R.dimen.shadow_width);
         menu.setShadowDrawable(R.drawable.shadow);
-        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        menu.setBehindOffsetRes(R.dimen.sliding_menu_offset);
         menu.setFadeEnabled(true);
         menu.setFadeDegree(0.35f);
         menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
@@ -307,132 +310,134 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
 
         initTabs(savedInstanceState);
         initSlidingMenu();
-//
-//        menuButton = (ImageButton) findViewById(R.id.menuButton);
-//        menuButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(NavigationTabActivity.this, WizardStartActivity.class));
-//            }
-//        });
-//        recogniseHandler = new RecogniseHandler(this);
-//
-//        deviceListSpinner.setBackgroundResource(R.drawable.custom_spinner_background);
-//        deviceListSpinner.setSpinnerItemLayout(R.layout.custom_white_spinner_item);
-//        callFloorButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (BluetoothTool.getInstance().isPrepared()) {
-//                    startActivity(new Intent(NavigationTabActivity.this, CallFloorWindow.class));
-//                }
-//            }
-//        });
-//
-//        connectStatusView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (BluetoothTool.getInstance().isConnected()) {
-//                    BluetoothDevice device = BluetoothTool.getInstance().connectedDevice;
-//                    String message = device.getName() + "\n" + device.getAddress();
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(NavigationTabActivity.this, R.style.GlobalDialogStyle)
-//                            .setTitle(R.string.bluetooth_address_text)
-//                            .setMessage(message)
-//                            .setPositiveButton(R.string.dialog_btn_ok, new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//
-//                                }
-//                            });
-//                    builder.create().show();
-//                }
-//            }
-//        });
-//
-//        searchBluetoothHandler = new SearchBluetoothHandler(this);
-//        getNormalDeviceTypeHandler = new GetNormalDeviceTypeHandler(this);
-//        getSpecialDeviceTypeHandler = new GetSpecialDeviceTypeHandler(this);
-//        getDeviceTypeTask = new Runnable() {
-//            @Override
-//            public void run() {
-//                if (isRunning) {
-//                    if (!hasGetDeviceType) {
-//                        if (BluetoothTool.getInstance().isLocked()) {
-//                            return;
-//                        }
-//                        if (currentTask == GET_NORMAL_DEVICE_TYPE) {
-//                            if (talkTime >= MaxRetryTime) {
-//                                // 内部用户版本
-//                                if (ApplicationConfig.IsInternalVersion) {
-//                                    communicationCodeList = new ArrayList<CommunicationCode>();
-//                                    for (SpecialDevice device : specialDeviceList) {
-//                                        CommunicationCode code = new CommunicationCode();
-//                                        code.setCode(device.getCode());
-//                                        Timestamp timestamp = Timestamp.valueOf("2090-10-10 00:00:00.0");
-//                                        long time = timestamp.getTime() / 1000;
-//                                        code.setExpirationTime(time);
-//                                        communicationCodeList.add(code);
-//                                    }
-//                                }
-//                                talkTime = 0;
-//                                currentTask = GET_SPECIAL_DEVICE_TYPE;
-//                                specialDeviceCodeIndex = 0;
-//                            }
-//                        }
-//                        if (currentTask == GET_SPECIAL_DEVICE_TYPE) {
-//                            if (communicationCodeList.size() == 0) {
-//                                runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        Toast.makeText(NavigationTabActivity.this,
-//                                                R.string.recognise_device_failed_text,
-//                                                Toast.LENGTH_SHORT).show();
-//                                    }
-//                                });
-//                                isRunning = false;
-//                            } else {
-//                                if (specialDeviceCodeIndex >= communicationCodeList.size() - 1) {
-//                                    runOnUiThread(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            Toast.makeText(NavigationTabActivity.this,
-//                                                    R.string.recognise_device_failed_text,
-//                                                    Toast.LENGTH_SHORT).show();
-//                                        }
-//                                    });
-//                                    isRunning = false;
-//                                }
-//                                if (talkTime >= MaxRetryTime) {
-//                                    talkTime = 0;
-//                                    currentTask = GET_SPECIAL_DEVICE_TYPE;
-//                                    specialDeviceCodeIndex++;
-//                                }
-//                            }
-//                        }
-//                        talkTime++;
-//                        pool.execute(NavigationTabActivity.this);
-//                        delayHandler.postDelayed(getDeviceTypeTask, LOOP_TIME);
-//                    }
-//                }
-//            }
-//        };
-//        showRefreshButtonProgress(false);
-//        /**
-//         * 绑定搜索按钮动作
-//         */
-//        researchDevicesButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showRefreshButtonProgress(true);
-//                searchDeviceTipsView.setText(R.string.searching_device_text);
-//                searchDeviceTipsView.setVisibility(View.VISIBLE);
-//                deviceListSpinner.setVisibility(View.GONE);
-//                currentTask = SEARCH_DEVICE;
-//                pool.execute(NavigationTabActivity.this);
-//            }
-//        });
-//        MessageHandler.getInstance(NavigationTabActivity.this);
-//        overridePendingTransition(R.anim.activity_open_animation, R.anim.activity_close_animation);
 
+        menuButton = (ImageButton) findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (menu.isMenuShowing())
+                    menu.showContent();
+                else
+                    menu.showMenu();
+            }
+        });
+        recogniseHandler = new RecogniseHandler(this);
+
+        deviceListSpinner.setBackgroundResource(R.drawable.custom_spinner_background);
+        deviceListSpinner.setSpinnerItemLayout(R.layout.custom_white_spinner_item);
+        callFloorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (BluetoothTool.getInstance().isPrepared()) {
+                    startActivity(new Intent(NavigationTabActivity.this, CallFloorWindow.class));
+                }
+            }
+        });
+
+        connectStatusView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (BluetoothTool.getInstance().isConnected()) {
+                    BluetoothDevice device = BluetoothTool.getInstance().connectedDevice;
+                    String message = device.getName() + "\n" + device.getAddress();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(NavigationTabActivity.this, R.style.GlobalDialogStyle)
+                            .setTitle(R.string.bluetooth_address_text)
+                            .setMessage(message)
+                            .setPositiveButton(R.string.dialog_btn_ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                    builder.create().show();
+                }
+            }
+        });
+
+        searchBluetoothHandler = new SearchBluetoothHandler(this);
+        getNormalDeviceTypeHandler = new GetNormalDeviceTypeHandler(this);
+        getSpecialDeviceTypeHandler = new GetSpecialDeviceTypeHandler(this);
+        getDeviceTypeTask = new Runnable() {
+            @Override
+            public void run() {
+                if (isRunning) {
+                    if (!hasGetDeviceType) {
+                        if (BluetoothTool.getInstance().isLocked()) {
+                            return;
+                        }
+                        if (currentTask == GET_NORMAL_DEVICE_TYPE) {
+                            if (talkTime >= MaxRetryTime) {
+                                // 内部用户版本
+                                if (ApplicationConfig.IsInternalVersion) {
+                                    communicationCodeList = new ArrayList<CommunicationCode>();
+                                    for (SpecialDevice device : specialDeviceList) {
+                                        CommunicationCode code = new CommunicationCode();
+                                        code.setCode(device.getCode());
+                                        Timestamp timestamp = Timestamp.valueOf("2090-10-10 00:00:00.0");
+                                        long time = timestamp.getTime() / 1000;
+                                        code.setExpirationTime(time);
+                                        communicationCodeList.add(code);
+                                    }
+                                }
+                                talkTime = 0;
+                                currentTask = GET_SPECIAL_DEVICE_TYPE;
+                                specialDeviceCodeIndex = 0;
+                            }
+                        }
+                        if (currentTask == GET_SPECIAL_DEVICE_TYPE) {
+                            if (communicationCodeList.size() == 0) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(NavigationTabActivity.this,
+                                                R.string.recognise_device_failed_text,
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                isRunning = false;
+                            } else {
+                                if (specialDeviceCodeIndex >= communicationCodeList.size() - 1) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(NavigationTabActivity.this,
+                                                    R.string.recognise_device_failed_text,
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    isRunning = false;
+                                }
+                                if (talkTime >= MaxRetryTime) {
+                                    talkTime = 0;
+                                    currentTask = GET_SPECIAL_DEVICE_TYPE;
+                                    specialDeviceCodeIndex++;
+                                }
+                            }
+                        }
+                        talkTime++;
+                        pool.execute(NavigationTabActivity.this);
+                        delayHandler.postDelayed(getDeviceTypeTask, LOOP_TIME);
+                    }
+                }
+            }
+        };
+        showRefreshButtonProgress(false);
+        /**
+         * 绑定搜索按钮动作
+         */
+        researchDevicesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showRefreshButtonProgress(true);
+                searchDeviceTipsView.setText(R.string.searching_device_text);
+                searchDeviceTipsView.setVisibility(View.VISIBLE);
+                deviceListSpinner.setVisibility(View.GONE);
+                currentTask = SEARCH_DEVICE;
+                pool.execute(NavigationTabActivity.this);
+            }
+        });
+        MessageHandler.getInstance(NavigationTabActivity.this);
+        overridePendingTransition(R.anim.activity_open_animation, R.anim.activity_close_animation);
     }
 
     /**
@@ -605,55 +610,42 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
      * @param pagerIndex Pager Index
      */
     public void switchTab(final int tabIndex, final int pagerIndex) {
-//        this.getTabHost().setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-//            @Override
-//            public void onTabChanged(String tabId) {
-//                if (tabIndex == 0) {
-//                    if (getCurrentActivity() instanceof TroubleAnalyzeActivity) {
-//                        final TroubleAnalyzeActivity troubleAnalyzeActivity = (TroubleAnalyzeActivity) getCurrentActivity();
-//                        troubleAnalyzeActivity.pageIndex = pagerIndex;
-//                        Runnable runnable = new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                troubleAnalyzeActivity.changePagerIndex(pagerIndex);
-//                            }
-//                        };
-//                        Handler handler = new Handler();
-//                        handler.postDelayed(runnable, 300);
-//                        getTabHost().setOnTabChangedListener(null);
-//                    }
-//                }
-//                if (tabIndex == 1) {
-//                    if (getCurrentActivity() instanceof ConfigurationActivity) {
-//                        final ConfigurationActivity configurationActivity = (ConfigurationActivity) getCurrentActivity();
-//                        Runnable runnable = new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                configurationActivity.changePagerIndex(pagerIndex);
-//                            }
-//                        };
-//                        Handler handler = new Handler();
-//                        handler.postDelayed(runnable, 300);
-//                        getTabHost().setOnTabChangedListener(null);
-//                    }
-//                }
-//                if (tabIndex == 3) {
-//                    if (getCurrentActivity() instanceof FirmwareManageActivity) {
-//                        final FirmwareManageActivity firmwareManageActivity = (FirmwareManageActivity) getCurrentActivity();
-//                        Runnable runnable = new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                firmwareManageActivity.changePagerIndex(pagerIndex);
-//                            }
-//                        };
-//                        Handler handler = new Handler();
-//                        handler.postDelayed(runnable, 300);
-//                        getTabHost().setOnTabChangedListener(null);
-//                    }
-//                }
-//            }
-//        });
-//        this.getTabHost().setCurrentTab(tabIndex);
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                Activity currentActivity = lam.getActivity(tabHost.getCurrentTabTag());
+                if (tabIndex == 0) {
+                    if (currentActivity instanceof ConfigurationActivity) {
+                        final ConfigurationActivity configurationActivity = (ConfigurationActivity) currentActivity;
+                        Runnable runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                configurationActivity.changePagerIndex(pagerIndex);
+                            }
+                        };
+                        Handler handler = new Handler();
+                        handler.postDelayed(runnable, 300);
+                        tabHost.setOnTabChangedListener(null);
+                    }
+                }
+                else if (tabIndex == 2) {
+                    if (currentActivity instanceof TroubleAnalyzeActivity) {
+                        final TroubleAnalyzeActivity troubleAnalyzeActivity = (TroubleAnalyzeActivity) currentActivity;
+                        troubleAnalyzeActivity.pageIndex = pagerIndex;
+                        Runnable runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                troubleAnalyzeActivity.changePagerIndex(pagerIndex);
+                            }
+                        };
+                        Handler handler = new Handler();
+                        handler.postDelayed(runnable, 300);
+                        tabHost.setOnTabChangedListener(null);
+                    }
+                }
+            }
+        });
+        tabHost.setCurrentTab(tabIndex);
     }
 
     /**
