@@ -30,7 +30,9 @@ public class ParameterSettings implements Cloneable {
     @Id
     private int Id;
 
-    private String code;// 功能码
+    private String code;// 功能码地址
+
+    private String codeText; //功能码全名
 
     private String name;// 名称
 
@@ -173,21 +175,29 @@ public class ParameterSettings implements Cloneable {
     }
 
     public String getCode() {
-        return code.replace("FR", "D2");
+        if (code.contains("FP")) {
+            return code.replace("FP", "D5");
+        } else if (code.contains("FR")) {
+            return code.replace("FR", "D2");
+        } else
+            return code;
     }
 
     @InstantText(viewId = R.id.code_text)
     public String getCodeText() {
-        String codeText = getCode();
-        if (codeText.length() == 4) {
-            return codeText.substring(0, 2).replace("D2", "FR")
-                    + "-" + codeText.substring(2, 4);
-        }
-        return "";
+//        String codeText = getCode();
+//        if (codeText.length() == 4) {
+//            return codeText.substring(0, 2).replace("D2", "FR")
+//                    + "-" + codeText.substring(2, 4);
+//        }
+//        return "";
+        return codeText;
     }
 
     public void setCode(String code) {
         this.code = code;
+        this.codeText = codeText.substring(0, 2)
+                + "-" + codeText.substring(2, 4);
     }
 
     @InstantText(viewId = R.id.text_parameter_setting)

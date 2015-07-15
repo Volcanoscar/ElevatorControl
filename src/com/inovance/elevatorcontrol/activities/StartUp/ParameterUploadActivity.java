@@ -347,7 +347,8 @@ public class ParameterUploadActivity extends Activity {
                     int mode = Integer.parseInt(jsonObject.optString("mode".toUpperCase()));
                     if (mode != 3) {
                         final ParameterSettings item = new ParameterSettings();
-                        item.setCode(jsonObject.optString("code".toUpperCase()));
+                        //item.setCode(jsonObject.optString("code".toUpperCase()));
+                        item.setCode(jsonObject.optString("code".toUpperCase()).replace("-", ""));
                         item.setName(jsonObject.optString("name".toUpperCase()));
                         item.setProductId(String.valueOf(jsonObject.optInt("productId".toUpperCase())));
                         item.setDescription(jsonObject.optString("description".toUpperCase()));
