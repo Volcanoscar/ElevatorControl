@@ -119,6 +119,9 @@ public class ParameterSettings implements Cloneable {
     @ManyToOne(column = "FKGroupId")
     private ParameterGroupSettings parametergroupsettings;
 
+    @ManyToOne(column = "FKTabId")
+    private FunctionTab functionTab;
+
     /**
      * 无描述返回     0
      * 数值计算匹配   1
@@ -183,6 +186,12 @@ public class ParameterSettings implements Cloneable {
             return code;
     }
 
+    public void setCode(String code) {
+        this.code = code;
+        this.codeText = code.substring(0, 2)
+                + "-" + code.substring(2, 4);
+    }
+
     @InstantText(viewId = R.id.code_text)
     public String getCodeText() {
 //        String codeText = getCode();
@@ -194,11 +203,8 @@ public class ParameterSettings implements Cloneable {
         return codeText;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-        this.codeText = codeText.substring(0, 2)
-                + "-" + codeText.substring(2, 4);
-    }
+    public void setCodeText(String codeText) {this.codeText = codeText;}
+
 
     @InstantText(viewId = R.id.text_parameter_setting)
     public String getName() {
@@ -333,6 +339,11 @@ public class ParameterSettings implements Cloneable {
     public void setParametergroupsettings(ParameterGroupSettings parametergroupsettings) {
         this.parametergroupsettings = parametergroupsettings;
     }
+
+    public void setFunctionTab(FunctionTab functionTab) {
+        this.functionTab = functionTab;
+    }
+
 
     public int getDescriptionType() {
         return descriptionType;

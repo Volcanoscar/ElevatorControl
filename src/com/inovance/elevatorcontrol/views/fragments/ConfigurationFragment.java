@@ -13,15 +13,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.inovance.bluetoothtool.BluetoothTool;
 import com.inovance.elevatorcontrol.R;
 import com.inovance.elevatorcontrol.activities.MainTab.ConfigurationActivity;
-import com.inovance.elevatorcontrol.activities.StartUp.ParameterDetailActivity;
+import com.inovance.elevatorcontrol.activities.Common.ParameterDetailActivity;
 import com.inovance.elevatorcontrol.activities.StartUp.ParameterDownloadActivity;
 import com.inovance.elevatorcontrol.activities.StartUp.ParameterUploadActivity;
+import com.inovance.elevatorcontrol.daos.FunctionTabDao;
 import com.inovance.elevatorcontrol.daos.ParameterGroupSettingsDao;
-import com.inovance.elevatorcontrol.models.Configuration.CommonGroup;
 import com.inovance.elevatorcontrol.models.Configuration.SpecialistGroup;
+import com.inovance.elevatorcontrol.models.FunctionTab;
 import com.inovance.elevatorcontrol.models.ParameterGroupSettings;
 import com.inovance.elevatorcontrol.models.RealTimeMonitor;
 import com.mobsandgeeks.adapters.InstantAdapter;
@@ -49,6 +49,10 @@ public class ConfigurationFragment extends Fragment {
     private ListView groupListView;
 
     private List<ParameterGroupSettings> groupSettingsList = new ArrayList<ParameterGroupSettings>();
+
+    private List<FunctionTab> commGroupTabList = new ArrayList<FunctionTab>();
+
+    private List<FunctionTab> speciaGroupTabList = new ArrayList<FunctionTab>();
 
     private ListView commonListView;
 
@@ -105,54 +109,24 @@ public class ConfigurationFragment extends Fragment {
     }
 
     private void initCommonListView() {
-        final List<CommonGroup> commGroup = CommonGroup
-                .getCommonGroupLists(ConfigurationFragment.this.getActivity());
-        InstantAdapter<CommonGroup> instantAdapter = new InstantAdapter<CommonGroup>(
+
+        commGroupTabList.clear();
+        commGroupTabList.addAll(FunctionTabDao.findAllCommonTab(context));
+        InstantAdapter<FunctionTab> instantAdapter = new InstantAdapter<FunctionTab>(
                 getActivity().getApplicationContext(),
-                R.layout.list_configuration_setting_item, CommonGroup.class,
-                commGroup);
+                R.layout.list_configuration_setting_item, FunctionTab.class,
+                commGroupTabList);
+
         commonListView.setAdapter(instantAdapter);
         commonListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                if (BluetoothTool.getInstance().isPrepared()) {
-                    switch (position) {
-                        case 0: {
-                            Intent intent = new Intent(ConfigurationFragment.this.getActivity(),
-                                    ParameterUploadActivity.class);
-                            ConfigurationFragment.this.getActivity().startActivity(intent);
-                        }
-                        break;
-                        case 1: {
-                            Intent intent = new Intent(ConfigurationFragment.this.getActivity(),
-                                    ParameterDownloadActivity.class);
-                            ConfigurationFragment.this.getActivity().startActivity(intent);
-                        }
-                        break;
-                        case 2: {
-                            final ConfigurationActivity activity = (ConfigurationActivity)
-                                    ConfigurationFragment.this.getActivity();
-                            AlertDialog.Builder builder = new AlertDialog.Builder(activity,
-                                    R.style.GlobalDialogStyle)
-                                    .setTitle(R.string.confirm_restore_title)
-                                    .setMessage(R.string.confirm_restore_message)
-                                    .setNegativeButton(R.string.dialog_btn_cancel, null)
-                                    .setPositiveButton(R.string.dialog_btn_ok, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            if (activity != null) {
-                                                activity.restoreFactory();
-                                            }
-                                        }
-                                    });
-                            builder.create().show();
-                        }
-                        break;
-                    }
-                }
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), ParameterDetailActivity.class);
+                intent.putExtra("SelectedId", commGroupTabList.get(position).getId());
+                getActivity().startActivity(intent);
             }
         });
+
     }
 
     private void initSpecialistListView()

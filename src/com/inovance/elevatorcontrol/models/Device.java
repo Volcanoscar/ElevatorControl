@@ -58,6 +58,11 @@ public class Device {
      */
     private String functionCodeUpdateTime;
 
+    /*
+     * 功能分组更新时间
+     */
+    private String functionTabUpdateTime;
+
     /**
      * 故障帮助更新时间
      */
@@ -125,6 +130,15 @@ public class Device {
 
     public void setErrorHelpUpdateTime(String errorHelpUpdateTime) {
         this.errorHelpUpdateTime = errorHelpUpdateTime;
+    }
+
+    public void setFuncodeTabUpdateTime(String functionTabUpdateTime)
+    {
+        this.functionTabUpdateTime = functionTabUpdateTime;
+    }
+
+    public String getFunctionTabUpdateTime() {
+        return functionTabUpdateTime;
     }
 
 }

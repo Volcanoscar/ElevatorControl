@@ -3,7 +3,7 @@ package com.inovance.elevatorcontrol.handlers;
 import android.app.Activity;
 import android.os.Message;
 
-import com.inovance.elevatorcontrol.activities.StartUp.ParameterDetailActivity;
+import com.inovance.elevatorcontrol.activities.Common.ParameterDetailActivity;
 import com.inovance.elevatorcontrol.models.ObjectListHolder;
 import com.inovance.elevatorcontrol.models.ParameterSettings;
 

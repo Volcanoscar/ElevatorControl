@@ -82,6 +82,8 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
 
     private boolean updateErrorHelpComplete;
 
+    private boolean updateFunctionTabComplete;
+
     private boolean broadcastRegistered;
 
     /**
@@ -98,6 +100,11 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
      * 故障帮助更新时间戳
      */
     private String errorHelpUpdateTimeString;
+
+    /*
+    * 功能分组更新时间戳
+    */
+    private String functionTabUpdateTimeString;
 
     /**
      * 是否同步状态，只针对 NICE 1000 / NICE 3000 设备
@@ -269,6 +276,7 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
             updateFunctionCodeComplete = false;
             updateStateCodeComplete = false;
             updateErrorHelpComplete = false;
+            updateFunctionTabComplete = false;
             WebInterface.getInstance().setOnRequestListener(this);
             WebInterface.getInstance().getDeviceCodeUpdateTime(context, remoteID, deviceType);
         } else {
@@ -286,7 +294,7 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
             updateDialog.setIndeterminate(false);
             updateDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             updateDialog.show();
-            updateDialog.setCancelable(false);
+            updateDialog.setCancelable(true);
             updateDialog.setCanceledOnTouchOutside(false);
         }
     }
@@ -303,7 +311,8 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
      * 检查更新是否完毕
      */
     private void checkUpdateParameterDataComplete() {
-        if (updateFunctionCodeComplete && updateStateCodeComplete && updateErrorHelpComplete) {
+        if (updateFunctionCodeComplete && updateStateCodeComplete && updateErrorHelpComplete
+                && updateFunctionTabComplete) {
             if (updateDialog != null && updateDialog.isShowing()) {
                 updateDialog.dismiss();
             }
@@ -341,6 +350,24 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
                                 updateFunctionCodeComplete = true;
                             }
                         }
+                        else
+                        if (type.equalsIgnoreCase("funtab")) {
+                            if (currentDevice.getFunctionTabUpdateTime() == null
+                                    || !currentDevice.getFunctionTabUpdateTime().equalsIgnoreCase(updateTimeString)) {
+                                functionTabUpdateTimeString = updateTimeString;
+                                ParameterFactoryDao.emptyRecordByDeviceID(context,
+                                        getDeviceSQLID(),
+                                        ApplicationConfig.FunctionTabType);
+                                updateFunctionTabComplete = false;
+                                showUpdateDialog();
+                                WebInterface.getInstance().getFunctionTab(context,
+                                        currentDevice.getRemoteID(),
+                                        currentDevice.getDeviceType());
+                            } else {
+                                updateFunctionCodeComplete = true;
+                            }
+                        }
+                        else
                         if (type.equalsIgnoreCase("state")) {
                             if (currentDevice.getStateCodeUpdateTime() == null
                                     || !currentDevice.getStateCodeUpdateTime().equalsIgnoreCase(updateTimeString)) {
@@ -357,6 +384,7 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
                                 updateStateCodeComplete = true;
                             }
                         }
+                        else
                         if (type.equalsIgnoreCase("help")) {
                             if (currentDevice.getErrorHelpUpdateTime() == null
                                     || !currentDevice.getErrorHelpUpdateTime().equalsIgnoreCase(updateTimeString)) {
@@ -423,6 +451,23 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
                     currentDevice.setErrorHelpUpdateTime(errorHelpUpdateTimeString);
                     DeviceDao.update(context, currentDevice);
                     updateErrorHelpComplete = true;
+                    checkUpdateParameterDataComplete();
+                }
+            }).start();
+        }
+        //功能分组
+        if (tag.equalsIgnoreCase(ApplicationConfig.GetFunctionCode4Tab)) {
+            final String data = responseString;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ParameterFactoryDao.emptyRecordByDeviceID(context,
+                            getDeviceSQLID(),
+                            ApplicationConfig.FunctionTabType);
+                    ParameterFactoryDao.saveFunctionTab(data, context, getDeviceSQLID());
+                    currentDevice.setFuncodeTabUpdateTime(functionTabUpdateTimeString);
+                    DeviceDao.update(context, currentDevice);
+                    updateFunctionTabComplete = true;
                     checkUpdateParameterDataComplete();
                 }
             }).start();

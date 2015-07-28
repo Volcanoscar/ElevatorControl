@@ -34,12 +34,12 @@ public class LeftMenuFragment extends Fragment {
     private NavigationTabActivity mainActivity;
     private List<SlideMenuItem> menuItemList = new ArrayList<SlideMenuItem>();
     private Class[] menuClassList = {
-                            WizardStartActivity.class, //引导调试
-                            BluetoothAddressActivity.class,    //连接设备
-                            CallInsideActivity.class, //招梯测试
-                            CallOutsideActivity.class,    //参数拷贝 ---
-                            FirmwareManageActivity.class, //程序管理
-                            HelpSystemActivity.class};    //帮助
+                            WizardStartActivity.class, //寮曞璋冭瘯
+                            BluetoothAddressActivity.class,    //杩炴帴璁惧
+                            CallInsideActivity.class, //鎷涙娴嬭瘯
+                            CallOutsideActivity.class,    //鍙傛暟鎷疯礉
+                            FirmwareManageActivity.class, //绋嬪簭绠＄悊
+                            HelpSystemActivity.class};    //甯姪
 
     private Integer[] menuIconList = {R.drawable.menu_wizard_32,R.drawable.menu_connect_32,
             R.drawable.menu_call_elevator_32,R.drawable.menu_copy1_32,

@@ -12,6 +12,7 @@ public class ApplicationConfig {
      * 是否是内部用户版本
      */
     public static final boolean IsInternalVersion = true;
+    public static final boolean IsLocalTestVersion = true;
 
     /**
      * 是否生产环境
@@ -330,11 +331,17 @@ public class ApplicationConfig {
     public static final int ErrorHelpType = 3;
 
     /**
+     * 功能分组类型
+     */
+    public static final int FunctionTabType = 4;
+
+    /**
      * 测试版本签名不加密
      */
     public static final String RootDomain = IsProductionMode
             ? "http://android.iotdataserver.cn:8007"
-            : "http://58.60.228.147:8007";
+            : "http://192.168.18.104:8007";
+            //: "http://58.60.228.147:8007";
 
     public static final String APIUri = RootDomain + "/HuiChuanAPI.asmx/";
 
@@ -369,6 +376,12 @@ public class ApplicationConfig {
     // isT: 是否是专用设备 0 专用设备 1 标准设备
     // 返回值：返回JSON格式的故障码
     public static final String GetErrorHelp = "GetErrHelp?DeviceType={param0}&isT={param1}";
+
+    // 获取故障码
+    // 参数：DeviceType 设备型号
+    // isT: 是否是专用设备 0 专用设备 1 标准设备
+    // 返回值：返回JSON格式的故障码
+    public static final String GetFunctionCode4Tab = "GetFunctionCode4TabGroup?DeviceType={param0}&isT={param1}";
 
     // 获取状态码
     // 参数：DeviceType 设备型号

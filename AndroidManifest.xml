@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.inovance.elevatorcontrol"
     android:versionCode="1"
-    android:versionName="1.0.5051">
+    android:versionName="1.0.7">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -102,7 +102,7 @@
         <!-- ////////////////////////////////////////////////////////////////////////// -->
         <!-- 参数详细 -->
         <activity
-            android:name=".activities.StartUp.ParameterDetailActivity"
+            android:name=".activities.Common.ParameterDetailActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait" />
         <!-- 远程协助 -->
