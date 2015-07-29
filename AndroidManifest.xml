@@ -129,12 +129,12 @@
             android:screenOrientation="portrait" />
         <!-- 参数写入 -->
         <activity
-            android:name=".activities.StartUp.ParameterUploadActivity"
+            android:name=".activities.SlideMenu.Firmware.ParameterUploadActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait" />
         <!-- 参数读取 -->
         <activity
-            android:name=".activities.StartUp.ParameterDownloadActivity"
+            android:name=".activities.SlideMenu.Firmware.ParameterDownloadActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait" />
         <!-- 快捷菜单设置 -->
@@ -165,7 +165,7 @@
             android:screenOrientation="portrait" />
         <!-- 保存的配置文件查看 -->
         <activity
-            android:name=".activities.StartUp.ParameterViewerActivity"
+            android:name=".activities.Common.ParameterViewerActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait" />
         <!-- 操作日志 -->
@@ -185,7 +185,7 @@
             android:screenOrientation="portrait" />
         <!-- 离线参数数据 -->
         <activity
-            android:name=".activities.StartUp.OfflineParameterActivity"
+            android:name=".activities.Common.OfflineParameterActivity"
             android:icon="@drawable/ic_elevator_actionbar_white"
             android:screenOrientation="portrait" />
         <!-- Zxing barcode scanner -->

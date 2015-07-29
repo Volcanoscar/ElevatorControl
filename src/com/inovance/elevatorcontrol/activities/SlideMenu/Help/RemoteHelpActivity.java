@@ -29,7 +29,7 @@ import android.widget.Toast;
 
 import com.inovance.bluetoothtool.BluetoothTool;
 import com.inovance.elevatorcontrol.R;
-import com.inovance.elevatorcontrol.activities.StartUp.ParameterViewerActivity;
+import com.inovance.elevatorcontrol.activities.Common.ParameterViewerActivity;
 import com.inovance.elevatorcontrol.adapters.ChatMessageAdapter;
 import com.inovance.elevatorcontrol.config.ApplicationConfig;
 import com.inovance.elevatorcontrol.config.ParameterUpdateTool;
