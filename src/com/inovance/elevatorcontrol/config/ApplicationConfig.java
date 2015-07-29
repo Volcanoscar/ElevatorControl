@@ -10,12 +10,14 @@ public class ApplicationConfig {
 
     /**
      * 是否是内部用户版本
+     * true内部用户版本 false普通用户版本
      */
     public static final boolean IsInternalVersion = true;
     public static final boolean IsLocalTestVersion = true;
 
     /**
      * 是否生产环境
+     * true连接正式服务器, false连接测试服务器
      */
     public static final boolean IsProductionMode = false;
 
