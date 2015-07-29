@@ -6,6 +6,7 @@ import com.inovance.elevatorcontrol.config.ApplicationConfig;
 import com.inovance.elevatorcontrol.config.ParameterUpdateTool;
 import com.inovance.elevatorcontrol.models.Device;
 import com.inovance.elevatorcontrol.models.ErrorHelp;
+import com.inovance.elevatorcontrol.models.FunctionTab;
 import com.inovance.elevatorcontrol.models.ParameterGroupSettings;
 import com.inovance.elevatorcontrol.models.ParameterSettings;
 import com.inovance.elevatorcontrol.models.RealTimeMonitor;
@@ -40,9 +41,11 @@ public class ParameterFactoryDao {
         int parameterGroupSettingsSize = db.findAll(ParameterGroupSettings.class).size();
         int realTimeMonitorSize = db.findAll(RealTimeMonitor.class).size();
         int errorHelpSize = db.findAll(ErrorHelp.class).size();
+        int functionTabSize = db.findAll(FunctionTab.class).size();
         return parameterSettingsSize == 0 || parameterGroupSettingsSize == 0
-                || realTimeMonitorSize == 0 || errorHelpSize == 0;
+                || realTimeMonitorSize == 0 || errorHelpSize == 0 || functionTabSize == 0;
     }
+
 
     /**
      * 恢复出厂设置
@@ -56,12 +59,14 @@ public class ParameterFactoryDao {
         FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
         db.deleteAll(ParameterSettings.class);
         db.deleteAll(ParameterGroupSettings.class);
+        db.deleteAll(FunctionTab.class);
         db.deleteAll(RealTimeMonitor.class);
         db.deleteAll(ErrorHelp.class);
 
         restoreFactoryParameterGroupSettings(context, device.getId());
         restoreFactoryRealTimeMonitor(context, device.getId());
         restoreFactoryErrorHelp(context, device.getId());
+        restoreFactoryFunctionTab(context, device.getId());
         ParameterUpdateTool.getInstance().init(context);
     }
 
@@ -84,6 +89,9 @@ public class ParameterFactoryDao {
             case ApplicationConfig.ErrorHelpType:
                 ErrorHelpDao.deleteAllByDeviceID(context, deviceID);
                 break;
+            case ApplicationConfig.FunctionTabType:
+                FunctionTabDao.deleteAllByDeviceID(context, deviceID);
+                break;
         }
     }
 
@@ -98,6 +106,18 @@ public class ParameterFactoryDao {
         db.deleteAll(ParameterGroupSettings.class);
         String JSON = AssetUtils.readDefaultFunCode(context, "NICE3000+_FunCode.json");
         saveFunctionCode(JSON, context, deviceID);
+    }
+
+    /**
+     * 恢复FuncationTab的出厂设置
+     *
+     * @param context context
+     */
+    public static void restoreFactoryFunctionTab(Context context, int deviceID) {
+        FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
+        db.deleteAll(FunctionTab.class);
+        String JSON = AssetUtils.readDefaultFunCode(context, "NICE3000+_FunTab.json");
+        saveFunctionTab(JSON, context, deviceID);
     }
 
     /**
@@ -219,6 +239,53 @@ public class ParameterFactoryDao {
                 errorHelp.setLastTime(new Date());
                 errorHelp.setDeviceID(deviceID);
                 db.save(errorHelp);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveFunctionTab(String content, Context context, int deviceID) {
+        FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
+        try {
+            JSONArray tabs = new JSONArray(content);
+            // 遍历group
+            int size = tabs.length();
+            for (int i = 0; i < size; i++) {
+                JSONObject groupsJSONObject = tabs.getJSONObject(i);
+                FunctionTab tabGroup = new FunctionTab();
+                tabGroup.setGroupText(groupsJSONObject.optString("GROUPTEXT"));
+                tabGroup.setGroupId(groupsJSONObject.optString("GROUPID"));
+                tabGroup.setGroupTab(groupsJSONObject.optInt("GROUPTAB"));
+                tabGroup.setValid(true);
+                tabGroup.setLastTime(new Date());
+                tabGroup.setDeviceID(deviceID);
+                // 保存groupEntity并且id设置为插入后的值
+                db.saveBindId(tabGroup);
+                JSONArray settingJson = groupsJSONObject.getJSONArray("parameterSettings".toUpperCase());
+                // 遍历settings
+                int length = settingJson.length();
+                for (int j = 0; j < length; j++) {
+                    JSONObject jsonObject = settingJson.getJSONObject(j);
+                    ParameterSettings settings = new ParameterSettings();
+                    settings.setCode(jsonObject.optString("CODE").replace("-", ""));
+                    settings.setName(jsonObject.optString("NAME"));
+                    settings.setProductId(jsonObject.optString("PRODUCTID"));
+                    settings.setDescription(jsonObject.optString("DESCRIPTION"));
+                    settings.setDescriptionType(ParameterSettings.ParseDescriptionToType(settings.getDescription()));
+                    settings.setJSONDescription(ParameterSettings.GenerateJSONDescription(settings.getDescription()));
+                    settings.setChildId(jsonObject.optString("CHILDID"));
+                    settings.setScope(jsonObject.optString("SCOPE").replaceAll("-", "").replace("～", "~"));
+                    settings.setDefaultValue(jsonObject.optString("DEFAULTVALUE"));
+                    settings.setScale(jsonObject.optString("SCALE"));
+                    settings.setUnit(jsonObject.optString("UNIT"));
+                    settings.setType(jsonObject.optString("TYPE"));
+                    settings.setMode(jsonObject.optString("MODE"));
+                    settings.setDeviceID(deviceID);
+                    settings.setFunctionTab(tabGroup);
+                    // 保存setting
+                    db.save(settings);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

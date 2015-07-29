@@ -1,4 +1,4 @@
-package com.inovance.elevatorcontrol.activities.StartUp;
+package com.inovance.elevatorcontrol.activities.Common;
 
 import android.app.Activity;
 import android.app.AlertDialog;

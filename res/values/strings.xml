@@ -272,15 +272,15 @@
     <string name="upload_profile_failed_title">无法上传</string>
     <string name="upload_profile_failed_message">电梯正在运行，无法上传参数。</string>
 
-    <!--电梯调式-常用-->
-    <string name="common_motor_tuning">电机调谐</string>
-    <string name="common_well_study">井道自学习</string>
-    <string name="common_service_layer_settings">服务层设置</string>
-    <string name="common_weighing_self_study">称重自学习</string>
-    <string name="common_parking_setting">泊梯设置</string>
-    <string name="common_floor_display_settings">楼层显示设置</string>
-    <string name="common_system_time_settings">系统时间设置</string>
-    <string name="common_energy_saving">节能功能</string>
+    <!--&lt;!&ndash;电梯调式-常用&ndash;&gt;-->
+    <!--<string name="common_motor_tuning">电机调谐</string>-->
+    <!--<string name="common_well_study">井道自学习</string>-->
+    <!--<string name="common_service_layer_settings">服务层设置</string>-->
+    <!--<string name="common_weighing_self_study">称重自学习</string>-->
+    <!--<string name="common_parking_setting">泊梯设置</string>-->
+    <!--<string name="common_floor_display_settings">楼层显示设置</string>-->
+    <!--<string name="common_system_time_settings">系统时间设置</string>-->
+    <!--<string name="common_energy_saving">节能功能</string>-->
 
     <!--电梯调式-专家-->
     <string name="specialist_comfort_optimization">舒适感优化</string>

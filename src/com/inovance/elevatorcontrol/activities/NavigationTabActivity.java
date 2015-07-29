@@ -249,10 +249,24 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
 
     private int selectedOperationType = -1;
 
+    private RecogniseHandler recogniseHandler;
+
+    private ExecutorService pool = Executors.newSingleThreadExecutor();
+
     /**
-     * menu按钮，点击按钮展示左侧布局，再点击一次隐藏左侧布局。
+     * Tab控件和活动管理器
+     */
+    LocalActivityManager lam;
+
+    TabHost tabHost;
+
+    /**
+     * menu按钮，点击按钮展示左侧布局菜单
      */
     private ImageButton menuButton;
+
+    private SlidingMenu menu;
+
 
     private static class RecogniseHandler extends Handler {
 
@@ -279,27 +293,6 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
                 }
             }
         }
-    }
-
-    private RecogniseHandler recogniseHandler;
-
-    private ExecutorService pool = Executors.newSingleThreadExecutor();
-    private SlidingMenu menu;
-
-    private void initSlidingMenu() {
-        //Slide menu for main page
-        menu = new SlidingMenu(this);
-        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        menu.setShadowWidthRes(R.dimen.shadow_width);
-        menu.setShadowDrawable(R.drawable.shadow);
-        menu.setBehindOffsetRes(R.dimen.sliding_menu_offset);
-        menu.setFadeEnabled(true);
-        menu.setFadeDegree(0.35f);
-        menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-        menu.setBehindWidth(300);
-
-        menu.setMenu(R.layout.menu_frame);
-        getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, new LeftMenuFragment()).commit();
     }
 
     @Override
@@ -440,6 +433,23 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
         overridePendingTransition(R.anim.activity_open_animation, R.anim.activity_close_animation);
     }
 
+
+    private void initSlidingMenu() {
+        //Slide menu for main page
+        menu = new SlidingMenu(this);
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        menu.setShadowWidthRes(R.dimen.shadow_width);
+        menu.setShadowDrawable(R.drawable.shadow);
+        menu.setBehindOffsetRes(R.dimen.sliding_menu_offset);
+        menu.setFadeEnabled(true);
+        menu.setFadeDegree(0.35f);
+        menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        menu.setBehindWidth(300);
+
+        menu.setMenu(R.layout.menu_frame);
+        getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, new LeftMenuFragment()).commit();
+    }
+
     /**
      * 更新蓝牙状态标识
      */
@@ -551,8 +561,6 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
         WebInterface.getInstance().removeListener();
     }
 
-    LocalActivityManager lam;
-    TabHost tabHost;
     /**
      * 标签初始化
      */
@@ -627,8 +635,7 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
                         handler.postDelayed(runnable, 300);
                         tabHost.setOnTabChangedListener(null);
                     }
-                }
-                else if (tabIndex == 2) {
+                } else if (tabIndex == 2) {
                     if (currentActivity instanceof TroubleAnalyzeActivity) {
                         final TroubleAnalyzeActivity troubleAnalyzeActivity = (TroubleAnalyzeActivity) currentActivity;
                         troubleAnalyzeActivity.pageIndex = pagerIndex;
@@ -916,6 +923,7 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
     }
+
 
     /**
      * 解析读取的非标设备类型

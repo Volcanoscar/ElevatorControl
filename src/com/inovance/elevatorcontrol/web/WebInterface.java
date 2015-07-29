@@ -200,6 +200,26 @@ public class WebInterface {
     }
 
     /**
+     * 取得功能分组
+     *
+     * @param deviceID   设备 API ID
+     * @param deviceType 设备类型
+     */
+    public void getFunctionTab(Context context, int deviceID, int deviceType) {
+        String requestURL = ApplicationConfig.APIUri + ApplicationConfig.GetFunctionCode4Tab;
+        requestURL = requestURL.replace("{param0}", String.valueOf(deviceID));
+        switch (deviceType) {
+            case Device.NormalDevice:
+                requestURL = requestURL.replace("{param1}", "1");
+                break;
+            case Device.SpecialDevice:
+                requestURL = requestURL.replace("{param1}", "0");
+                break;
+        }
+        startGetRequest(context, requestURL, ApplicationConfig.GetFunctionCode4Tab, false);
+    }
+
+    /**
      * 取得错误帮助信息
      *
      * @param deviceID   设备 API ID
