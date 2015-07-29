@@ -188,6 +188,7 @@ public class CallFloorWindow extends FragmentActivity implements CallInsideFragm
         mViewPager.setAdapter(callFloorAdapter);
         mViewPager.setCurrentItem(0);
 
+        //indicator与viewPager关联
         TabPageIndicator indicator = (TabPageIndicator) findViewById(R.id.indicator);
         indicator.setViewPager(mViewPager);
 
