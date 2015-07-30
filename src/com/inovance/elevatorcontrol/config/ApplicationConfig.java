@@ -347,7 +347,7 @@ public class ApplicationConfig {
      */
     public static final String RootDomain = IsProductionMode
             ? "http://android.iotdataserver.cn:8007"
-            : "http://192.168.18.104:8007";
+            : "http://192.168.5.159:8007";
             //: "http://58.60.228.147:8007";
 
     public static final String APIUri = RootDomain + "/HuiChuanAPI.asmx/";

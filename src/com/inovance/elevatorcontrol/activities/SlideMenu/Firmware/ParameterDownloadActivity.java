@@ -1,4 +1,4 @@
-package com.inovance.elevatorcontrol.activities.StartUp;
+package com.inovance.elevatorcontrol.activities.SlideMenu.Firmware;
 
 import android.app.Activity;
 import android.app.AlertDialog;

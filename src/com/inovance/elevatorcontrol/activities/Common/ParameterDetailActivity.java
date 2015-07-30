@@ -282,7 +282,7 @@ public class ParameterDetailActivity extends Activity implements RefreshActionIt
     }
 
     /**
-     * 绑定ListView Item点击时间
+     * 绑定ListView Item点击事件
      */
     private void bindListViewItemClickListener() {
         parameterDetailListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

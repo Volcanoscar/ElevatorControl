@@ -73,6 +73,8 @@ public class CheckAuthorizationActivity extends Activity implements WebInterface
 
     private boolean hasGetSpecialDeviceCodeList = false;
 
+    private boolean isInitRuning = false;
+
     private static final int REQUEST_BLUETOOTH_ENABLE = 1;
 
     @Override
@@ -169,8 +171,10 @@ public class CheckAuthorizationActivity extends Activity implements WebInterface
         if (ParameterFactoryDao.checkEmpty(this)) {
             progressView.setVisibility(View.VISIBLE);
             waitTextView.setText(R.string.init_data_wait_text);
-            Thread thread = new Thread(runnable);
-            thread.start();
+            if (!isInitRuning) {
+                Thread thread = new Thread(runnable);
+                thread.start();
+            }
         } else {
             btnLogin.setEnabled(true);
             btnSignUp.setEnabled(true);
@@ -199,8 +203,10 @@ public class CheckAuthorizationActivity extends Activity implements WebInterface
 
         @Override
         public void run() {
+            isInitRuning = true;
             ParameterFactoryDao.dbInit(CheckAuthorizationActivity.this);
             mHandler.obtainMessage(WRITE_FINISH).sendToTarget();
+            isInitRuning = !isInitRuning;
         }
 
     };

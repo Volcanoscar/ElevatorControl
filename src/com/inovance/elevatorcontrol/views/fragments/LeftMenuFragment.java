@@ -16,9 +16,9 @@ import android.widget.TextView;
 import com.inovance.elevatorcontrol.R;
 import com.inovance.elevatorcontrol.activities.Common.BluetoothAddressActivity;
 import com.inovance.elevatorcontrol.activities.Common.CallInsideActivity;
-import com.inovance.elevatorcontrol.activities.Common.CallOutsideActivity;
 import com.inovance.elevatorcontrol.activities.NavigationTabActivity;
 import com.inovance.elevatorcontrol.activities.SlideMenu.Firmware.FirmwareManageActivity;
+import com.inovance.elevatorcontrol.activities.SlideMenu.Firmware.ParameterDownloadActivity;
 import com.inovance.elevatorcontrol.activities.SlideMenu.Help.HelpSystemActivity;
 import com.inovance.elevatorcontrol.activities.SlideMenu.Wizard.WizardStartActivity;
 import com.inovance.elevatorcontrol.models.SlideMenuItem;
@@ -37,7 +37,7 @@ public class LeftMenuFragment extends Fragment {
                             WizardStartActivity.class, //引导调试
                             BluetoothAddressActivity.class,    //连接设备
                             CallInsideActivity.class, //招梯测试
-                            CallOutsideActivity.class,    //参数拷贝
+                            ParameterDownloadActivity.class,    //参数拷贝
                             FirmwareManageActivity.class, //程序管理
                             HelpSystemActivity.class};    //帮助
 

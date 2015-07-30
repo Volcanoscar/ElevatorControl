@@ -1,4 +1,4 @@
-package com.inovance.elevatorcontrol.activities.StartUp;
+package com.inovance.elevatorcontrol.activities.SlideMenu.Firmware;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,6 +26,7 @@ import com.inovance.bluetoothtool.BluetoothTalk;
 import com.inovance.bluetoothtool.BluetoothTool;
 import com.inovance.bluetoothtool.SerialUtility;
 import com.inovance.elevatorcontrol.R;
+import com.inovance.elevatorcontrol.activities.Common.ParameterViewerActivity;
 import com.inovance.elevatorcontrol.config.ApplicationConfig;
 import com.inovance.elevatorcontrol.daos.ProfileDao;
 import com.inovance.elevatorcontrol.daos.RealTimeMonitorDao;
