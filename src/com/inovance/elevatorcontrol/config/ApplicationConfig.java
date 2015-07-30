@@ -9,6 +9,17 @@ package com.inovance.elevatorcontrol.config;
 public class ApplicationConfig {
 
     /**
+     *  false旧协议,ture 新协议
+     */
+    public static boolean bNewProtocol = false;
+
+    /**
+     * 有返回: 支持新协议
+     * 无返回或者返回8001错误码: 老协议
+     */
+    public static final String CheckDeviceProtocol = "017010000000";
+
+    /**
      * 是否是内部用户版本
      * true内部用户版本 false普通用户版本
      */
@@ -37,12 +48,6 @@ public class ApplicationConfig {
      * 写密码解锁设备参数
      */
     public static final String UnlockDeviceCode = "4000";
-
-    /**
-     * 有返回: 支持该设备 (NICE 5000+, NICE 7000+)
-     * 无返回或者返回8001错误码: 暂不支持该设备
-     */
-    public static final String CheckDeviceVersion = "017010000000";
 
     /**
      * 获取设备型号指令

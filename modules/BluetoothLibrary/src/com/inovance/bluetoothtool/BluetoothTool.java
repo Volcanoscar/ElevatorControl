@@ -619,7 +619,7 @@ public class BluetoothTool implements Runnable {
                     handler.sendEmptyMessage(BluetoothState.onMultiTalkBegin);
                 }
                 if (communications != null) {
-                    // 特殊设备
+                    // 特殊设备(Build.MODEL:手机型号)
                     if (!Arrays.asList(specialDevices).contains(Build.MODEL)) {
                         try {
                             byte[] temp = new byte[1024];
