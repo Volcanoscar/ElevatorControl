@@ -172,7 +172,7 @@ public class WebInterface {
     public void verifyUser(Context context, String bluetoothAddress) {
         if (ApplicationConfig.IsInternalVersion) {
             String requestURL = ApplicationConfig.APIUri + ApplicationConfig.VerifyInternalUser + bluetoothAddress;
-            startGetRequest(context, requestURL, ApplicationConfig.VerifyInternalUser, true);
+            startGetRequest(context, requestURL, ApplicationConfig.VerifyInternalUser, false);
         } else {
             String requestURL = ApplicationConfig.APIUri + ApplicationConfig.VerifyUser + bluetoothAddress;
             startGetRequest(context, requestURL, ApplicationConfig.VerifyUser, true);

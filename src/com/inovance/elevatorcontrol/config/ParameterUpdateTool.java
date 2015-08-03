@@ -278,7 +278,7 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
             updateErrorHelpComplete = false;
             updateFunctionTabComplete = false;
             WebInterface.getInstance().setOnRequestListener(this);
-            WebInterface.getInstance().getDeviceCodeUpdateTime(context, remoteID, deviceType);
+            //WebInterface.getInstance().getDeviceCodeUpdateTime(context, remoteID, deviceType);
         } else {
             // 网络不可用
             if (mListener != null) {

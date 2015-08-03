@@ -262,7 +262,8 @@ public class BluetoothTool implements Runnable {
 
                 String valueString = SerialUtility.byte2HexStr(sendBuffer);
                 int expectLength;
-                if (valueString.substring(0, 4).equalsIgnoreCase("0106")) {
+                String cmdHead = valueString.substring(0, 4);
+                if (cmdHead.equals("0106") || cmdHead.equals("0170")) {
                     expectLength = 8;
                 } else {
                     expectLength = SerialUtility.getIntFromBytes(sendBuffer) * 2 + 6;
