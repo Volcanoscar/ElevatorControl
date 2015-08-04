@@ -48,6 +48,7 @@ import com.inovance.elevatorcontrol.views.dialogs.UtilsDialog;
 import com.inovance.elevatorcontrol.views.fragments.LeftMenuFragment;
 import com.inovance.elevatorcontrol.views.slidemenu.SlidingMenu;
 import com.inovance.elevatorcontrol.web.WebInterface;
+import com.inovance.elevatorcontrol.window.CallFloorWindow;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -336,10 +337,7 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
             @Override
             public void onClick(View view) {
                 if (BluetoothTool.getInstance().isPrepared()) {
-                    //startActivity(new Intent(NavigationTabActivity.this, CallFloorWindow.class));
-
-                    currentTask = GET_DEVICE_PROTOCOL;
-                    pool.execute(NavigationTabActivity.this);
+                    startActivity(new Intent(NavigationTabActivity.this, CallFloorWindow.class));
                 }
             }
         });
@@ -909,23 +907,27 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
                                 byte[] receive = this.getReceivedBuffer();
                                 String value = SerialUtility.byte2HexStr(receive);
                                 if (value.substring(0, 8).equals("01700002")) {
-                                    ApplicationConfig.bNewProtocol = true;
+                                    ApplicationConfig.bNewProtocol = 1;
                                 } else {
-                                    ApplicationConfig.bNewProtocol = false;
+                                    ApplicationConfig.bNewProtocol = 0;
                                 }
-                                return 1;
                             }
-                           return null;
+                           return ApplicationConfig.bNewProtocol;
                         }
                     }
             };
         }
         if (BluetoothTool.getInstance().isConnected()) {
             BluetoothTool.getInstance()
-                    .setHandler(getDeviceProtocolTypeHandler) //
+                    .setHandler(getDeviceProtocolTypeHandler)
                     .setCommunications(getProtocolTypeTalk)
                     .startTask();
         }
+    }
+
+    private void startCheckProtocolType() {
+        currentTask = GET_DEVICE_PROTOCOL;
+        pool.execute(NavigationTabActivity.this);
     }
 
 
@@ -954,6 +956,8 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
                 names.add(device.getName());
             }
         }
+        startCheckProtocolType();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(NavigationTabActivity.this);
         builder.setTitle(R.string.choice_device_type_title);
         builder.setItems(names.toArray(new String[names.size()]), new DialogInterface.OnClickListener() {
@@ -993,13 +997,13 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
         dialog.setCanceledOnTouchOutside(false);
     }
 
-
     /**
      * 解析读取的非标设备类型
      *
      * @param code 通信码
      */
     private void onGetSpecialDeviceType(CommunicationCode code) {
+        startCheckProtocolType();
         for (final SpecialDevice device : specialDeviceList) {
             if (code.getCode().equalsIgnoreCase(device.getCode())) {
                 BluetoothTool.getInstance().setHasSelectDeviceType(true);
@@ -1288,7 +1292,7 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
         @Override
         public void onBluetoothConnectException(Message message) {
             super.onBluetoothConnectException(message);
-            ApplicationConfig.bNewProtocol = false;
+            ApplicationConfig.bNewProtocol = -1;
             //currentTask = GET_NORMAL_DEVICE_TYPE;
         }
     }

@@ -9,9 +9,9 @@ package com.inovance.elevatorcontrol.config;
 public class ApplicationConfig {
 
     /**
-     *  false旧协议,ture 新协议
+     *  -1 初始值，0 旧协议,1 新协议
      */
-    public static boolean bNewProtocol = false;
+    public static int bNewProtocol = -1;
 
     /**
      * 有返回: 支持新协议
@@ -347,7 +347,7 @@ public class ApplicationConfig {
      */
     public static final String RootDomain = IsProductionMode
             ? "http://android.iotdataserver.cn:8007"
-            : "http://192.168.18.104:8007";
+            : "http://192.168.5.159:8007";
             //: "http://58.60.228.147:8007";
 
     public static final String APIUri = RootDomain + "/HuiChuanAPI.asmx/";
