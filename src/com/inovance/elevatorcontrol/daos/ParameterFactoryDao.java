@@ -6,7 +6,8 @@ import com.inovance.elevatorcontrol.config.ApplicationConfig;
 import com.inovance.elevatorcontrol.config.ParameterUpdateTool;
 import com.inovance.elevatorcontrol.models.Device;
 import com.inovance.elevatorcontrol.models.ErrorHelp;
-import com.inovance.elevatorcontrol.models.FunctionTab;
+import com.inovance.elevatorcontrol.models.GroupTab;
+import com.inovance.elevatorcontrol.models.GroupTabDetail;
 import com.inovance.elevatorcontrol.models.ParameterGroupSettings;
 import com.inovance.elevatorcontrol.models.ParameterSettings;
 import com.inovance.elevatorcontrol.models.RealTimeMonitor;
@@ -41,7 +42,7 @@ public class ParameterFactoryDao {
         int parameterGroupSettingsSize = db.findAll(ParameterGroupSettings.class).size();
         int realTimeMonitorSize = db.findAll(RealTimeMonitor.class).size();
         int errorHelpSize = db.findAll(ErrorHelp.class).size();
-        int functionTabSize = db.findAll(FunctionTab.class).size();
+        int functionTabSize = db.findAll(GroupTab.class).size();
         return parameterSettingsSize == 0 || parameterGroupSettingsSize == 0
                 || realTimeMonitorSize == 0 || errorHelpSize == 0 || functionTabSize == 0;
     }
@@ -59,14 +60,14 @@ public class ParameterFactoryDao {
         FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
         db.deleteAll(ParameterSettings.class);
         db.deleteAll(ParameterGroupSettings.class);
-        db.deleteAll(FunctionTab.class);
+        db.deleteAll(GroupTab.class);
         db.deleteAll(RealTimeMonitor.class);
         db.deleteAll(ErrorHelp.class);
 
         restoreFactoryParameterGroupSettings(context, device.getId());
         restoreFactoryRealTimeMonitor(context, device.getId());
         restoreFactoryErrorHelp(context, device.getId());
-        restoreFactoryFunctionTab(context, device.getId());
+        restoreFactoryGroupTab(context, device.getId());
         ParameterUpdateTool.getInstance().init(context);
     }
 
@@ -90,7 +91,7 @@ public class ParameterFactoryDao {
                 ErrorHelpDao.deleteAllByDeviceID(context, deviceID);
                 break;
             case ApplicationConfig.FunctionTabType:
-                FunctionTabDao.deleteAllByDeviceID(context, deviceID);
+                GroupTabDao.deleteAllByDeviceID(context, deviceID);
                 break;
         }
     }
@@ -104,20 +105,20 @@ public class ParameterFactoryDao {
         FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
         db.deleteAll(ParameterSettings.class);
         db.deleteAll(ParameterGroupSettings.class);
-        String JSON = AssetUtils.readDefaultFunCode(context, "NICE3000+_FunCode.json");
+        String JSON = AssetUtils.readDefaultJasonFile(context, "NICE3000+_FunCode.json");
         saveFunctionCode(JSON, context, deviceID);
     }
 
     /**
-     * 恢复FuncationTab的出厂设置
+     * 恢复GroupTab的出厂设置
      *
      * @param context context
      */
-    public static void restoreFactoryFunctionTab(Context context, int deviceID) {
+    public static void restoreFactoryGroupTab(Context context, int deviceID) {
         FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
-        db.deleteAll(FunctionTab.class);
-        String JSON = AssetUtils.readDefaultFunCode(context, "NICE3000+_FunTab.json");
-        saveFunctionTab(JSON, context, deviceID);
+        db.deleteAll(GroupTab.class);
+        String JSON = AssetUtils.readDefaultJasonFile(context, "NICE3000+_GroupTab.json");
+        saveGroupTab(JSON, context, deviceID);
     }
 
     /**
@@ -128,7 +129,7 @@ public class ParameterFactoryDao {
     public static void restoreFactoryRealTimeMonitor(Context context, int deviceID) {
         FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
         db.deleteAll(RealTimeMonitor.class);
-        String JSON = AssetUtils.readDefaultFunCode(context, "NICE3000+_State.json");
+        String JSON = AssetUtils.readDefaultJasonFile(context, "NICE3000+_State.json");
         saveStateCode(JSON, context, deviceID);
     }
 
@@ -140,7 +141,7 @@ public class ParameterFactoryDao {
     public static void restoreFactoryErrorHelp(Context context, int deviceID) {
         FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
         db.deleteAll(ErrorHelp.class);
-        String JSON = AssetUtils.readDefaultFunCode(context, "NICE3000+_ErrHelp.json");
+        String JSON = AssetUtils.readDefaultJasonFile(context, "NICE3000+_ErrHelp.json");
         saveErrorHelp(JSON, context, deviceID);
     }
 
@@ -245,7 +246,7 @@ public class ParameterFactoryDao {
         }
     }
 
-    public static void saveFunctionTab(String content, Context context, int deviceID) {
+    public static void saveGroupTab(String content, Context context, int deviceID) {
         FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
         try {
             JSONArray tabs = new JSONArray(content);
@@ -253,7 +254,7 @@ public class ParameterFactoryDao {
             int size = tabs.length();
             for (int i = 0; i < size; i++) {
                 JSONObject groupsJSONObject = tabs.getJSONObject(i);
-                FunctionTab tabGroup = new FunctionTab();
+                GroupTab tabGroup = new GroupTab();
                 tabGroup.setGroupText(groupsJSONObject.optString("GROUPTEXT"));
                 tabGroup.setGroupId(groupsJSONObject.optString("GROUPID"));
                 tabGroup.setGroupTab(groupsJSONObject.optInt("GROUPTAB"));
@@ -262,27 +263,16 @@ public class ParameterFactoryDao {
                 tabGroup.setDeviceID(deviceID);
                 // 保存groupEntity并且id设置为插入后的值
                 db.saveBindId(tabGroup);
-                JSONArray settingJson = groupsJSONObject.getJSONArray("parameterSettings".toUpperCase());
+                JSONArray settingJson = groupsJSONObject.getJSONArray("GROUPDETAIL".toUpperCase());
                 // 遍历settings
                 int length = settingJson.length();
                 for (int j = 0; j < length; j++) {
                     JSONObject jsonObject = settingJson.getJSONObject(j);
-                    ParameterSettings settings = new ParameterSettings();
+                    GroupTabDetail settings = new GroupTabDetail();
                     settings.setCode(jsonObject.optString("CODE").replace("-", ""));
-                    settings.setName(jsonObject.optString("NAME"));
-                    settings.setProductId(jsonObject.optString("PRODUCTID"));
-                    settings.setDescription(jsonObject.optString("DESCRIPTION"));
-                    settings.setDescriptionType(ParameterSettings.ParseDescriptionToType(settings.getDescription()));
-                    settings.setJSONDescription(ParameterSettings.GenerateJSONDescription(settings.getDescription()));
-                    settings.setChildId(jsonObject.optString("CHILDID"));
-                    settings.setScope(jsonObject.optString("SCOPE").replaceAll("-", "").replace("～", "~"));
-                    settings.setDefaultValue(jsonObject.optString("DEFAULTVALUE"));
-                    settings.setScale(jsonObject.optString("SCALE"));
-                    settings.setUnit(jsonObject.optString("UNIT"));
-                    settings.setType(jsonObject.optString("TYPE"));
-                    settings.setMode(jsonObject.optString("MODE"));
+                   
                     settings.setDeviceID(deviceID);
-                    settings.setFunctionTab(tabGroup);
+                    settings.setGroupTab(tabGroup);
                     // 保存setting
                     db.save(settings);
                 }

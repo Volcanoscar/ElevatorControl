@@ -12,7 +12,7 @@ public class AssetUtils {
      * @param context context
      * @return String
      */
-    public static String readDefaultFunCode(Context context, String filename) {
+    public static String readDefaultJasonFile(Context context, String filename) {
         InputStream inputStream = null;
         try {
             inputStream = context.getAssets().open(filename);

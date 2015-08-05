@@ -18,10 +18,10 @@ import com.inovance.elevatorcontrol.activities.MainTab.ConfigurationActivity;
 import com.inovance.elevatorcontrol.activities.Common.ParameterDetailActivity;
 import com.inovance.elevatorcontrol.activities.SlideMenu.Firmware.ParameterDownloadActivity;
 import com.inovance.elevatorcontrol.activities.SlideMenu.Firmware.ParameterUploadActivity;
-import com.inovance.elevatorcontrol.daos.FunctionTabDao;
+import com.inovance.elevatorcontrol.daos.GroupTabDao;
 import com.inovance.elevatorcontrol.daos.ParameterGroupSettingsDao;
 import com.inovance.elevatorcontrol.models.Configuration.SpecialistGroup;
-import com.inovance.elevatorcontrol.models.FunctionTab;
+import com.inovance.elevatorcontrol.models.GroupTab;
 import com.inovance.elevatorcontrol.models.ParameterGroupSettings;
 import com.inovance.elevatorcontrol.models.RealTimeMonitor;
 import com.mobsandgeeks.adapters.InstantAdapter;
@@ -50,9 +50,9 @@ public class ConfigurationFragment extends Fragment {
 
     private List<ParameterGroupSettings> groupSettingsList = new ArrayList<ParameterGroupSettings>();
 
-    private List<FunctionTab> commGroupTabList = new ArrayList<FunctionTab>();
+    private List<GroupTab> commGroupTabList = new ArrayList<GroupTab>();
 
-    private List<FunctionTab> speciaGroupTabList = new ArrayList<FunctionTab>();
+    private List<GroupTab> speciaGroupTabList = new ArrayList<GroupTab>();
 
     private ListView commonListView;
 
@@ -111,10 +111,10 @@ public class ConfigurationFragment extends Fragment {
     private void initCommonListView() {
 
         commGroupTabList.clear();
-        commGroupTabList.addAll(FunctionTabDao.findAllCommonTab(context));
-        InstantAdapter<FunctionTab> instantAdapter = new InstantAdapter<FunctionTab>(
+        commGroupTabList.addAll(GroupTabDao.findAllCommonTab(context));
+        InstantAdapter<GroupTab> instantAdapter = new InstantAdapter<GroupTab>(
                 getActivity().getApplicationContext(),
-                R.layout.list_configuration_setting_item, FunctionTab.class,
+                R.layout.list_configuration_setting_item, GroupTab.class,
                 commGroupTabList);
 
         commonListView.setAdapter(instantAdapter);

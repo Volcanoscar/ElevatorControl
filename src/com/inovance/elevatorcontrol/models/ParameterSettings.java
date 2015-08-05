@@ -119,9 +119,6 @@ public class ParameterSettings implements Cloneable {
     @ManyToOne(column = "FKGroupId")
     private ParameterGroupSettings parametergroupsettings;
 
-    @ManyToOne(column = "FKTabId")
-    private FunctionTab functionTab;
-
     /**
      * 无描述返回     0
      * 数值计算匹配   1
@@ -339,11 +336,6 @@ public class ParameterSettings implements Cloneable {
     public void setParametergroupsettings(ParameterGroupSettings parametergroupsettings) {
         this.parametergroupsettings = parametergroupsettings;
     }
-
-    public void setFunctionTab(FunctionTab functionTab) {
-        this.functionTab = functionTab;
-    }
-
 
     public int getDescriptionType() {
         return descriptionType;

@@ -16,8 +16,8 @@ import java.util.List;
  *
  * @author jch
  */
-@Table(name = "PARAMETER_FUNCTION_TAB_SETTINGS")
-public class FunctionTab {
+@Table(name = "GROUP_TAB")
+public class GroupTab {
     @net.tsz.afinal.annotation.sqlite.Id
     private int Id;
 
@@ -38,9 +38,9 @@ public class FunctionTab {
     private List<ParameterSettings> settingsList;
 
     @OneToMany(manyColumn = "FKGroupId")
-    private OneToManyLazyLoader<FunctionTab, ParameterSettings> parametersettings;
+    private OneToManyLazyLoader<GroupTab, ParameterSettings> parametersettings;
 
-    public FunctionTab() {
+    public GroupTab() {
     }
 
 //    public FunctionTab(JSONObject object) {
@@ -107,12 +107,12 @@ public class FunctionTab {
         this.lastTime = lastTime;
     }
 
-    public OneToManyLazyLoader<FunctionTab, ParameterSettings> getParametersettings() {
+    public OneToManyLazyLoader<GroupTab, ParameterSettings> getParametersettings() {
         return parametersettings;
     }
 
     public void setParametersettings(
-            OneToManyLazyLoader<FunctionTab, ParameterSettings> parametersettings) {
+            OneToManyLazyLoader<GroupTab, ParameterSettings> parametersettings) {
         this.parametersettings = parametersettings;
     }
 

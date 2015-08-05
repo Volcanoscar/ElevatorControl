@@ -464,7 +464,7 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
                     ParameterFactoryDao.emptyRecordByDeviceID(context,
                             getDeviceSQLID(),
                             ApplicationConfig.FunctionTabType);
-                    ParameterFactoryDao.saveFunctionTab(data, context, getDeviceSQLID());
+                    ParameterFactoryDao.saveGroupTab(data, context, getDeviceSQLID());
                     currentDevice.setFuncodeTabUpdateTime(functionTabUpdateTimeString);
                     DeviceDao.update(context, currentDevice);
                     updateFunctionTabComplete = true;

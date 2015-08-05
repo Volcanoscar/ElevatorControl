@@ -77,7 +77,7 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
     /**
      * 优先显示的设备名称
      */
-    private static final String SpecialDeviceName = "M-Tools";
+    private static final String BluetoothPrefixName = "M-Tools";
 
     /**
      * 用于搜索蓝牙的 Handler
@@ -702,27 +702,23 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
         List<String> specialDevicesName = new ArrayList<String>();
         List<String> normalDevicesName = new ArrayList<String>();
         List<BluetoothDevice> specialDevices = new ArrayList<BluetoothDevice>();
-        List<BluetoothDevice> normalDevices = new ArrayList<BluetoothDevice>();
         for (BluetoothDevice device : deviceList) {
             String deviceName = device.getName();
             if (deviceName == null) {
                 deviceName = "NULL";
             }
             String name = deviceName + "(" + device.getAddress() + ")";
-            if (deviceName.contains(SpecialDeviceName)) {
+            if (deviceName.contains(BluetoothPrefixName)) {
                 specialDevicesName.add(name);
                 specialDevices.add(device);
-            } else {
-                normalDevicesName.add(name);
-                normalDevices.add(device);
             }
+
         }
         List<String> concatenateName = new ArrayList<String>();
         concatenateName.addAll(specialDevicesName);
         concatenateName.addAll(normalDevicesName);
         tempDeviceList = new ArrayList<BluetoothDevice>();
         tempDeviceList.addAll(specialDevices);
-        tempDeviceList.addAll(normalDevices);
         tempDevicesName = concatenateName.toArray(new String[concatenateName.size()]);
         if (tempDevicesName.length > 0) {
             setSpinnerDataSource();
