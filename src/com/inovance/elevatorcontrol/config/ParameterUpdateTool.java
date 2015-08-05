@@ -82,7 +82,7 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
 
     private boolean updateErrorHelpComplete;
 
-    private boolean updateFunctionTabComplete;
+    private boolean updateGroupTabComplete;
 
     private boolean broadcastRegistered;
 
@@ -276,9 +276,9 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
             updateFunctionCodeComplete = false;
             updateStateCodeComplete = false;
             updateErrorHelpComplete = false;
-            updateFunctionTabComplete = false;
+            updateGroupTabComplete = false;
             WebInterface.getInstance().setOnRequestListener(this);
-            //WebInterface.getInstance().getDeviceCodeUpdateTime(context, remoteID, deviceType);
+            WebInterface.getInstance().getDeviceCodeUpdateTime(context, remoteID, deviceType);
         } else {
             // 网络不可用
             if (mListener != null) {
@@ -312,7 +312,7 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
      */
     private void checkUpdateParameterDataComplete() {
         if (updateFunctionCodeComplete && updateStateCodeComplete && updateErrorHelpComplete
-                && updateFunctionTabComplete) {
+                && updateGroupTabComplete) {
             if (updateDialog != null && updateDialog.isShowing()) {
                 updateDialog.dismiss();
             }
@@ -358,13 +358,13 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
                                 ParameterFactoryDao.emptyRecordByDeviceID(context,
                                         getDeviceSQLID(),
                                         ApplicationConfig.FunctionTabType);
-                                updateFunctionTabComplete = false;
+                                updateGroupTabComplete = false;
                                 showUpdateDialog();
                                 WebInterface.getInstance().getFunctionTab(context,
                                         currentDevice.getRemoteID(),
                                         currentDevice.getDeviceType());
                             } else {
-                                updateFunctionCodeComplete = true;
+                                updateGroupTabComplete = true;
                             }
                         }
                         else
@@ -467,7 +467,7 @@ public class ParameterUpdateTool implements WebInterface.OnRequestListener {
                     ParameterFactoryDao.saveGroupTab(data, context, getDeviceSQLID());
                     currentDevice.setFuncodeTabUpdateTime(functionTabUpdateTimeString);
                     DeviceDao.update(context, currentDevice);
-                    updateFunctionTabComplete = true;
+                    updateGroupTabComplete = true;
                     checkUpdateParameterDataComplete();
                 }
             }).start();
