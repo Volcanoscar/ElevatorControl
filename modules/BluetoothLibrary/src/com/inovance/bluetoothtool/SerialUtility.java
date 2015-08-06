@@ -182,7 +182,7 @@ public class SerialUtility {
 
     /**
      * 为命令添加2位crc16校验码
-     *
+     *根据不同的专用设备进行判断使用哪种校验
      * @param hexString Hex string
      * @return byte[]
      */
@@ -203,6 +203,35 @@ public class SerialUtility {
         System.arraycopy(crcBytes, 0, result, data.length, crcBytes.length);
         return result;
     }
+
+    /**
+     * 标准设备 CRC 校验
+     *
+     * @param data Data
+     * @return int
+     */
+    public static byte[] getCRCCheck(String hexString) {
+        byte[] data = hexStringToByteArray(hexString);
+        int crc_value = 0xFFFF;
+        for (byte aData : data) {
+            crc_value ^= (aData & 0xFF);// 默认转为16进制进行异或
+            for (int j = 0; j < 8; j++) {
+                if ((crc_value & 0x0001) > 0) {
+                    crc_value = (crc_value >> 1) ^ 0xa001;
+                } else {
+                    crc_value = crc_value >> 1;
+                }
+            }
+        }
+        byte[] crcBytes = new byte[2];
+        crcBytes[0] = (byte) (crc_value & 0xFF);
+        crcBytes[1] = (byte) ((crc_value >> 8) & 0xFF);
+        byte[] result = new byte[data.length + crcBytes.length];
+        System.arraycopy(data, 0, result, 0, data.length);
+        System.arraycopy(crcBytes, 0, result, data.length, crcBytes.length);
+        return result;
+    }
+
 
     /**
      * 标准设备 CRC 校验

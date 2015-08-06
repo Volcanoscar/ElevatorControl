@@ -879,7 +879,7 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
                     new BluetoothTalk() {
                         @Override
                         public void beforeSend() {
-                            this.setSendBuffer(SerialUtility.crc16(ApplicationConfig.CheckDeviceProtocol));
+                            this.setSendBuffer(SerialUtility.getCRCCheck(ApplicationConfig.CheckDeviceProtocol));
                         }
 
                         @Override
