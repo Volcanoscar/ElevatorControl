@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * ´ÓÉè±¸ÖĞ»ñÈ¡²ÎÊı×éÓë²ÎÊıÁĞ±í
+ * ä»è®¾å¤‡ä¸­è·å–å‚æ•°ç»„ä¸å‚æ•°åˆ—è¡¨
  * Created by inovance on 2015/8/6.
  */
 public class GetParamterFromDevice {
@@ -20,7 +20,7 @@ public class GetParamterFromDevice {
     private GetParameterListHandler parameterListHandler;
 
     private List<String> groupList = null;
-    HashMap<String, List<String>> parList = new HashMap<String, List<String>>();//¶şÎ¬Êı×é
+    HashMap<String, List<String>> parList = new HashMap<String, List<String>>();//äºŒç»´æ•°ç»„
 
     private BluetoothTalk[] getParGroupCommunication;
     private BluetoothTalk[] getParamterCommunications;
@@ -31,7 +31,7 @@ public class GetParamterFromDevice {
     }
 
     /**
-     * »ñÈ¡ÒªÏÔÊ¾µÄ²ÎÊı×é
+     * è·å–è¦æ˜¾ç¤ºçš„å‚æ•°ç»„
      */
     public void startGetParamterGroup() {
         if (getParGroupCommunication == null) {
@@ -62,11 +62,11 @@ public class GetParamterFromDevice {
                             byte[] data = getReceivedBuffer();
                             if (SerialUtility.isCRC16Valid(data)) {
                                 List<String> list = new ArrayList<String>();
-                                int nRetCount = (data[2] << 8) | data[3];//·µ»Ø×Ö½Ú¸öÊı,Ã¿×é3¸ö×Ö½Ú
+                                int nRetCount = (data[2] << 8) | data[3];//è¿”å›å­—èŠ‚ä¸ªæ•°,æ¯ç»„3ä¸ªå­—èŠ‚
                                 for (int i = 0; i < nRetCount / 3; i++) {
-                                    //×é¸öÊı
+                                    //ç»„ä¸ªæ•°
                                     int nGroupCount = data[4 + 3 * i] & 0x0F;
-                                    //×éÃû
+                                    //ç»„å
                                     String str = String.format("%X", (data[4 + 3 * i] >> 8) & 0x0F);
                                     int nGroupBit = (data[5 + 3 * i] << 8) | data[6 + 3 * i];
                                     for (int j = 0; j < nGroupCount; j++) {
@@ -93,7 +93,7 @@ public class GetParamterFromDevice {
     }
 
     /**
-     * »ñÈ¡ÒªÏÔÊ¾µÄ²ÎÊı×é
+     * è·å–è¦æ˜¾ç¤ºçš„å‚æ•°ç»„
      */
     public void startGetParamterList() {
         if (groupList == null)
@@ -130,12 +130,12 @@ public class GetParamterFromDevice {
                         byte[] data = getReceivedBuffer();
                         if (SerialUtility.isCRC16Valid(data)) {
                             List<String> list = new ArrayList<String>();
-                            int nRetCount = (data[2] << 8) | data[3];//·µ»Ø×Ö½Ú¸öÊı
+                            int nRetCount = (data[2] << 8) | data[3];//è¿”å›å­—èŠ‚ä¸ªæ•°
                             for (int i = nRetCount - 1; i >= 0; i--) {
                                 int nParData = data[4 + i];
                                 for (int j = 0; j < 8; j++) {
                                     if (nParData >> j == 1) {
-                                        //²ÎÊıÃû
+                                        //å‚æ•°å
                                         int nParCount = j + (nRetCount - i - 1) * 8;
                                         String str;
                                         if (nParCount >= 100)
@@ -186,7 +186,7 @@ public class GetParamterFromDevice {
         public void onTalkReceive(Message msg) {
             super.onTalkReceive(msg);
             if (msg.obj != null) {
-                //ÊÕµ½Êı¾İ
+                //æ”¶åˆ°æ•°æ®
             }
         }
     }
