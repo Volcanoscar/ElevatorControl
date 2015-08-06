@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.inovance.elevatorcontrol.config.ApplicationConfig;
 import com.inovance.elevatorcontrol.config.ParameterUpdateTool;
-import com.inovance.elevatorcontrol.models.GroupTab;
+import com.inovance.elevatorcontrol.models.GroupItem;
 
 import net.tsz.afinal.FinalDb;
 
@@ -14,30 +14,30 @@ public class GroupTabDao {
 
     private static final boolean DEBUG = false;
 
-    public static List<GroupTab> findAllCommonTab(Context context) {
+    public static List<GroupItem> findAllCommonTab(Context context) {
         String condition = "deviceID = '" + ParameterUpdateTool.getInstance().getDeviceSQLID() + "' "
                             + " and groupTab=0 ";
         FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
 
-        List<GroupTab> tabs =db.findAllByWhere(GroupTab.class, condition, "GroupID");
+        List<GroupItem> tabs =db.findAllByWhere(GroupItem.class, condition, "GroupID");
         return tabs;
     }
 
-    public static List<GroupTab> findAllSpecialTab(Context context) {
+    public static List<GroupItem> findAllSpecialTab(Context context) {
         String condition = "deviceID = '" + ParameterUpdateTool.getInstance().getDeviceSQLID() + "' "
                             + " and groupTab=1";
         FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
-        return db.findAllByWhere(GroupTab.class, condition, "GroupID");
+        return db.findAllByWhere(GroupItem.class, condition, "GroupID");
     }
 
-    public static GroupTab findById(Context context, int id) {
+    public static GroupItem findById(Context context, int id) {
         FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
-        return db.findById(id, GroupTab.class);
+        return db.findById(id, GroupItem.class);
     }
 
     public static void deleteAllByDeviceID(Context context, int deviceID) {
         FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
-        db.deleteByWhere(GroupTab.class, " deviceID = '" + deviceID + "'");
+        db.deleteByWhere(GroupItem.class, " deviceID = '" + deviceID + "'");
     }
 
 }

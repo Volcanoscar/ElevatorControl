@@ -1,8 +1,6 @@
 package com.inovance.elevatorcontrol.views.fragments;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,14 +12,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.inovance.elevatorcontrol.R;
-import com.inovance.elevatorcontrol.activities.MainTab.ConfigurationActivity;
 import com.inovance.elevatorcontrol.activities.Common.ParameterDetailActivity;
-import com.inovance.elevatorcontrol.activities.SlideMenu.Firmware.ParameterDownloadActivity;
-import com.inovance.elevatorcontrol.activities.SlideMenu.Firmware.ParameterUploadActivity;
 import com.inovance.elevatorcontrol.daos.GroupTabDao;
 import com.inovance.elevatorcontrol.daos.ParameterGroupSettingsDao;
-import com.inovance.elevatorcontrol.models.Configuration.SpecialistGroup;
-import com.inovance.elevatorcontrol.models.GroupTab;
+import com.inovance.elevatorcontrol.models.GroupItem;
 import com.inovance.elevatorcontrol.models.ParameterGroupSettings;
 import com.inovance.elevatorcontrol.models.RealTimeMonitor;
 import com.mobsandgeeks.adapters.InstantAdapter;
@@ -50,9 +44,9 @@ public class ConfigurationFragment extends Fragment {
 
     private List<ParameterGroupSettings> groupSettingsList = new ArrayList<ParameterGroupSettings>();
 
-    private List<GroupTab> commGroupTabList = new ArrayList<GroupTab>();
+    private List<GroupItem> commGroupItemList = new ArrayList<GroupItem>();
 
-    private List<GroupTab> speciaGroupTabList = new ArrayList<GroupTab>();
+    private List<GroupItem> speciaGroupItemList = new ArrayList<GroupItem>();
 
     private ListView commonListView;
 
@@ -110,19 +104,19 @@ public class ConfigurationFragment extends Fragment {
 
     private void initCommonListView() {
 
-        commGroupTabList.clear();
-        commGroupTabList.addAll(GroupTabDao.findAllCommonTab(context));
-        InstantAdapter<GroupTab> instantAdapter = new InstantAdapter<GroupTab>(
+        commGroupItemList.clear();
+        commGroupItemList.addAll(GroupTabDao.findAllCommonTab(context));
+        InstantAdapter<GroupItem> instantAdapter = new InstantAdapter<GroupItem>(
                 getActivity().getApplicationContext(),
-                R.layout.list_configuration_setting_item, GroupTab.class,
-                commGroupTabList);
+                R.layout.list_configuration_setting_item, GroupItem.class,
+                commGroupItemList);
 
         commonListView.setAdapter(instantAdapter);
         commonListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ParameterDetailActivity.class);
-                intent.putExtra("SelectedId", commGroupTabList.get(position).getId());
+                intent.putExtra("SelectedId", commGroupItemList.get(position).getId());
                 getActivity().startActivity(intent);
             }
         });
@@ -131,55 +125,23 @@ public class ConfigurationFragment extends Fragment {
 
     private void initSpecialistListView()
     {
-        final List<SpecialistGroup> commGroup = SpecialistGroup
-                .getSpecialistLists(ConfigurationFragment.this.getActivity());
-        InstantAdapter<SpecialistGroup> instantAdapter = new InstantAdapter<SpecialistGroup>(
+        speciaGroupItemList.clear();
+        speciaGroupItemList.addAll(GroupTabDao.findAllSpecialTab(context));
+        InstantAdapter<GroupItem> instantAdapter = new InstantAdapter<GroupItem>(
                 getActivity().getApplicationContext(),
-                R.layout.list_configuration_setting_item, SpecialistGroup.class,
-                commGroup);
+                R.layout.list_configuration_setting_item, GroupItem.class,
+                speciaGroupItemList);
+
         speciaListView.setAdapter(instantAdapter);
         speciaListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                //if (BluetoothTool.getInstance().isPrepared())
-                {
-                    switch (position) {
-                        case 0: {
-                            Intent intent = new Intent(ConfigurationFragment.this.getActivity(),
-                                    ParameterUploadActivity.class);
-                            ConfigurationFragment.this.getActivity().startActivity(intent);
-                        }
-                        break;
-                        case 1: {
-                            Intent intent = new Intent(ConfigurationFragment.this.getActivity(),
-                                    ParameterDownloadActivity.class);
-                            ConfigurationFragment.this.getActivity().startActivity(intent);
-                        }
-                        break;
-                        case 2: {
-                            final ConfigurationActivity activity = (ConfigurationActivity)
-                                    ConfigurationFragment.this.getActivity();
-                            AlertDialog.Builder builder = new AlertDialog.Builder(activity,
-                                    R.style.GlobalDialogStyle)
-                                    .setTitle(R.string.confirm_restore_title)
-                                    .setMessage(R.string.confirm_restore_message)
-                                    .setNegativeButton(R.string.dialog_btn_cancel, null)
-                                    .setPositiveButton(R.string.dialog_btn_ok, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            if (activity != null) {
-                                                activity.restoreFactory();
-                                            }
-                                        }
-                                    });
-                            builder.create().show();
-                        }
-                        break;
-                    }
-                }
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), ParameterDetailActivity.class);
+                intent.putExtra("SelectedId", commGroupItemList.get(position).getId());
+                getActivity().startActivity(intent);
             }
         });
+
     }
 
     private void initGroupListView() {

@@ -9,14 +9,14 @@ import net.tsz.afinal.annotation.sqlite.Table;
  * Created by Daniel on 2015/8/5.
  */
 @Table(name = "GROUP_TAB_DETAIL")
-public class GroupTabDetail {
+public class GroupItemDetail {
     @Id
     private int Id;
 
     private String code;// 功能码地址
 
     @ManyToOne(column = "FKTabId")
-    private GroupTab groupTab;
+    private GroupItem groupItem;
 
     public int getId() {
         return Id;
@@ -49,8 +49,8 @@ public class GroupTabDetail {
         this.deviceID = deviceID;
     }
 
-    public void setGroupTab(GroupTab groupTab) {
-        this.groupTab = groupTab;
+    public void setGroupItem(GroupItem groupItem) {
+        this.groupItem = groupItem;
     }
 
 

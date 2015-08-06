@@ -453,7 +453,7 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
     private void initSlidingMenu() {
         //Slide menu for main page
         menu = new SlidingMenu(this);
-        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
         menu.setShadowWidthRes(R.dimen.shadow_width);
         menu.setShadowDrawable(R.drawable.shadow);
         menu.setBehindOffsetRes(R.dimen.sliding_menu_offset);
