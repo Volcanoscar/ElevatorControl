@@ -6,8 +6,8 @@ import com.inovance.elevatorcontrol.config.ApplicationConfig;
 import com.inovance.elevatorcontrol.config.ParameterUpdateTool;
 import com.inovance.elevatorcontrol.models.Device;
 import com.inovance.elevatorcontrol.models.ErrorHelp;
-import com.inovance.elevatorcontrol.models.GroupItem;
-import com.inovance.elevatorcontrol.models.GroupItemDetail;
+import com.inovance.elevatorcontrol.models.GroupTab;
+import com.inovance.elevatorcontrol.models.GroupTabDetail;
 import com.inovance.elevatorcontrol.models.ParameterGroupSettings;
 import com.inovance.elevatorcontrol.models.ParameterSettings;
 import com.inovance.elevatorcontrol.models.RealTimeMonitor;
@@ -42,7 +42,7 @@ public class ParameterFactoryDao {
         int parameterGroupSettingsSize = db.findAll(ParameterGroupSettings.class).size();
         int realTimeMonitorSize = db.findAll(RealTimeMonitor.class).size();
         int errorHelpSize = db.findAll(ErrorHelp.class).size();
-        int functionTabSize = db.findAll(GroupItem.class).size();
+        int functionTabSize = db.findAll(GroupTab.class).size();
         return parameterSettingsSize == 0 || parameterGroupSettingsSize == 0
                 || realTimeMonitorSize == 0 || errorHelpSize == 0 || functionTabSize == 0;
     }
@@ -60,7 +60,7 @@ public class ParameterFactoryDao {
         FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
         db.deleteAll(ParameterSettings.class);
         db.deleteAll(ParameterGroupSettings.class);
-        db.deleteAll(GroupItem.class);
+        db.deleteAll(GroupTab.class);
         db.deleteAll(RealTimeMonitor.class);
         db.deleteAll(ErrorHelp.class);
 
@@ -116,7 +116,7 @@ public class ParameterFactoryDao {
      */
     public static void restoreFactoryGroupTab(Context context, int deviceID) {
         FinalDb db = FinalDb.create(context, ApplicationConfig.DATABASE_NAME, DEBUG);
-        db.deleteAll(GroupItem.class);
+        db.deleteAll(GroupTab.class);
         String JSON = AssetUtils.readDefaultJsonFile(context, "NICE3000+_GroupTab.json");
         saveGroupTab(JSON, context, deviceID);
     }
@@ -254,10 +254,10 @@ public class ParameterFactoryDao {
             int size = tabs.length();
             for (int i = 0; i < size; i++) {
                 JSONObject groupsJSONObject = tabs.getJSONObject(i);
-                GroupItem tabGroup = new GroupItem();
+                GroupTab tabGroup = new GroupTab();
                 tabGroup.setGroupText(groupsJSONObject.optString("GROUPTEXT"));
                 tabGroup.setGroupId(groupsJSONObject.optString("GROUPID"));
-                tabGroup.setGroupTab(groupsJSONObject.optInt("GROUPTAB"));
+                tabGroup.setGroupType(groupsJSONObject.optInt("GROUPTAB"));
                 tabGroup.setValid(true);
                 tabGroup.setLastTime(new Date());
                 tabGroup.setDeviceID(deviceID);
@@ -268,11 +268,11 @@ public class ParameterFactoryDao {
                 int length = settingJson.length();
                 for (int j = 0; j < length; j++) {
                     JSONObject jsonObject = settingJson.getJSONObject(j);
-                    GroupItemDetail settings = new GroupItemDetail();
+                    GroupTabDetail settings = new GroupTabDetail();
                     settings.setCode(jsonObject.optString("CODE").replace("-", ""));
                    
                     settings.setDeviceID(deviceID);
-                    settings.setGroupItem(tabGroup);
+                    settings.setGroupTab(tabGroup);
                     // 保存setting
                     db.save(settings);
                 }
