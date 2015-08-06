@@ -15,7 +15,7 @@ import com.inovance.elevatorcontrol.R;
 import com.inovance.elevatorcontrol.activities.Common.ParameterDetailActivity;
 import com.inovance.elevatorcontrol.daos.GroupTabDao;
 import com.inovance.elevatorcontrol.daos.ParameterGroupSettingsDao;
-import com.inovance.elevatorcontrol.models.GroupItem;
+import com.inovance.elevatorcontrol.models.GroupTab;
 import com.inovance.elevatorcontrol.models.ParameterGroupSettings;
 import com.inovance.elevatorcontrol.models.RealTimeMonitor;
 import com.mobsandgeeks.adapters.InstantAdapter;
@@ -44,9 +44,9 @@ public class ConfigurationFragment extends Fragment {
 
     private List<ParameterGroupSettings> groupSettingsList = new ArrayList<ParameterGroupSettings>();
 
-    private List<GroupItem> commGroupItemList = new ArrayList<GroupItem>();
+    private List<GroupTab> commGroupItemList = new ArrayList<GroupTab>();
 
-    private List<GroupItem> speciaGroupItemList = new ArrayList<GroupItem>();
+    private List<GroupTab> speciaGroupItemList = new ArrayList<GroupTab>();
 
     private ListView commonListView;
 
@@ -106,9 +106,9 @@ public class ConfigurationFragment extends Fragment {
 
         commGroupItemList.clear();
         commGroupItemList.addAll(GroupTabDao.findAllCommonTab(context));
-        InstantAdapter<GroupItem> instantAdapter = new InstantAdapter<GroupItem>(
+        InstantAdapter<GroupTab> instantAdapter = new InstantAdapter<GroupTab>(
                 getActivity().getApplicationContext(),
-                R.layout.list_configuration_setting_item, GroupItem.class,
+                R.layout.list_configuration_setting_item, GroupTab.class,
                 commGroupItemList);
 
         commonListView.setAdapter(instantAdapter);
@@ -117,6 +117,7 @@ public class ConfigurationFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ParameterDetailActivity.class);
                 intent.putExtra("SelectedId", commGroupItemList.get(position).getId());
+                intent.putExtra("SelectedTab", 0);
                 getActivity().startActivity(intent);
             }
         });
@@ -127,9 +128,9 @@ public class ConfigurationFragment extends Fragment {
     {
         speciaGroupItemList.clear();
         speciaGroupItemList.addAll(GroupTabDao.findAllSpecialTab(context));
-        InstantAdapter<GroupItem> instantAdapter = new InstantAdapter<GroupItem>(
+        InstantAdapter<GroupTab> instantAdapter = new InstantAdapter<GroupTab>(
                 getActivity().getApplicationContext(),
-                R.layout.list_configuration_setting_item, GroupItem.class,
+                R.layout.list_configuration_setting_item, GroupTab.class,
                 speciaGroupItemList);
 
         speciaListView.setAdapter(instantAdapter);
@@ -137,7 +138,8 @@ public class ConfigurationFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ParameterDetailActivity.class);
-                intent.putExtra("SelectedId", commGroupItemList.get(position).getId());
+                intent.putExtra("SelectedId", speciaGroupItemList.get(position).getId());
+                intent.putExtra("SelectedTab", 1);
                 getActivity().startActivity(intent);
             }
         });
@@ -157,6 +159,7 @@ public class ConfigurationFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ParameterDetailActivity.class);
                 intent.putExtra("SelectedId", groupSettingsList.get(position).getId());
+                intent.putExtra("SelectedTab", 2);
                 getActivity().startActivity(intent);
             }
         });

@@ -30,10 +30,14 @@ import com.inovance.elevatorcontrol.adapters.CheckedListViewAdapter;
 import com.inovance.elevatorcontrol.adapters.DialogSwitchListViewAdapter;
 import com.inovance.elevatorcontrol.config.ApplicationConfig;
 import com.inovance.elevatorcontrol.config.ParameterUpdateTool;
+import com.inovance.elevatorcontrol.daos.GroupTabDao;
 import com.inovance.elevatorcontrol.daos.ParameterGroupSettingsDao;
+import com.inovance.elevatorcontrol.daos.ParameterSettingsDao;
 import com.inovance.elevatorcontrol.factory.ParameterFactory;
 import com.inovance.elevatorcontrol.handlers.ParameterDetailHandler;
 import com.inovance.elevatorcontrol.handlers.UnlockHandler;
+import com.inovance.elevatorcontrol.models.GroupTab;
+import com.inovance.elevatorcontrol.models.GroupTabDetail;
 import com.inovance.elevatorcontrol.models.ObjectListHolder;
 import com.inovance.elevatorcontrol.models.ParameterGroupSettings;
 import com.inovance.elevatorcontrol.models.ParameterSettings;
@@ -234,10 +238,31 @@ public class ParameterDetailActivity extends Activity implements RefreshActionIt
      * 设置 ListView Adapter
      */
     private void initListViewData() {
-        int SelectedId = this.getIntent().getIntExtra("SelectedId", 0);
-        ParameterGroupSettings parameterGroupSettings = ParameterGroupSettingsDao.findById(this, SelectedId);
-        this.setTitle(parameterGroupSettings.getGroupText());
-        settingsList = parameterGroupSettings.getParametersettings().getList();
+        int selectedId = this.getIntent().getIntExtra("SelectedId", 0);
+        int selectedTab = this.getIntent().getIntExtra("SelectedTab",2);
+
+        switch(selectedTab) {
+            case 0:
+            case 1:
+                GroupTab groupItem = GroupTabDao.findById(this, selectedId);
+                this.setTitle(groupItem.getGroupText());
+
+                List<GroupTabDetail> details = groupItem.getParametersettings().getList();
+                String[] codes = new String[details.size()];
+
+                for (int i = 0; i<details.size(); i++) {
+                    codes[i] = ((GroupTabDetail)details.get(i)).getCode();
+                }
+                settingsList = ParameterSettingsDao.findAllByCodes(this, codes);
+                break;
+            case 2:
+                ParameterGroupSettings parameterGroupSettings = ParameterGroupSettingsDao.findById(this, selectedId);
+                this.setTitle(parameterGroupSettings.getGroupText());
+                settingsList = parameterGroupSettings.getParametersettings().getList();
+                break;
+        }
+
+
         // NICE 1000 / NICE 3000 设备提示用户选择同步异步
         String deviceName = ParameterUpdateTool.getInstance().getDeviceName();
         if (deviceName.equals(ApplicationConfig.NormalDeviceType[0]) ||

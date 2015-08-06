@@ -17,7 +17,7 @@ import java.util.List;
  * @author jch
  */
 @Table(name = "GROUP_TAB")
-public class GroupItem {
+public class GroupTab {
     @net.tsz.afinal.annotation.sqlite.Id
     private int Id;
 
@@ -27,7 +27,7 @@ public class GroupItem {
 
     private int deviceID;
 
-    private int groupTab;
+    private int groupType;
 
     @Transient
     private boolean Valid;
@@ -37,10 +37,10 @@ public class GroupItem {
 
     private List<ParameterSettings> settingsList;
 
-    @OneToMany(manyColumn = "FKGroupId")
-    private OneToManyLazyLoader<GroupItem, ParameterSettings> parametersettings;
+    @OneToMany(manyColumn = "FKTabId")
+    private OneToManyLazyLoader<GroupTab, GroupTabDetail> parametersettings;
 
-    public GroupItem() {
+    public GroupTab() {
     }
 
     public int getId() {
@@ -77,13 +77,13 @@ public class GroupItem {
     }
 
 
-    public void setGroupTab(int groupTab) {
-        this.groupTab = groupTab;
+    public void setGroupType(int groupType) {
+        this.groupType = groupType;
     }
 
-    public int getGroupTab()
+    public int getGroupType()
     {
-        return this.groupTab;
+        return this.groupType;
     }
 
     public boolean isValid() {
@@ -102,12 +102,12 @@ public class GroupItem {
         this.lastTime = lastTime;
     }
 
-    public OneToManyLazyLoader<GroupItem, ParameterSettings> getParametersettings() {
+    public OneToManyLazyLoader<GroupTab, GroupTabDetail> getParametersettings() {
         return parametersettings;
     }
 
     public void setParametersettings(
-            OneToManyLazyLoader<GroupItem, ParameterSettings> parametersettings) {
+            OneToManyLazyLoader<GroupTab, GroupTabDetail> parametersettings) {
         this.parametersettings = parametersettings;
     }
 

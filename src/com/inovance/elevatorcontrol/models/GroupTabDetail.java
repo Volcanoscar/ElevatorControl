@@ -9,14 +9,16 @@ import net.tsz.afinal.annotation.sqlite.Table;
  * Created by Daniel on 2015/8/5.
  */
 @Table(name = "GROUP_TAB_DETAIL")
-public class GroupItemDetail {
+public class GroupTabDetail implements Cloneable {
     @Id
     private int Id;
 
     private String code;// 功能码地址
 
+    private int deviceID;
+
     @ManyToOne(column = "FKTabId")
-    private GroupItem groupItem;
+    private GroupTab groupTab;
 
     public int getId() {
         return Id;
@@ -39,8 +41,6 @@ public class GroupItemDetail {
         this.code = code;
     }
 
-    private int deviceID;
-
     public int getDeviceID() {
         return deviceID;
     }
@@ -49,9 +49,14 @@ public class GroupItemDetail {
         this.deviceID = deviceID;
     }
 
-    public void setGroupItem(GroupItem groupItem) {
-        this.groupItem = groupItem;
+    public GroupTab getGroupTab()
+    {
+        return this.groupTab;
     }
+    public void setGroupTab(GroupTab groupTab) {
+        this.groupTab = groupTab;
+    }
+
 
 
 }
