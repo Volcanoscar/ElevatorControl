@@ -233,6 +233,8 @@ public class BluetoothTool implements Runnable {
                 if (handler != null) {
                     handler.sendEmptyMessage(BluetoothState.onBeforeTalkSend);
                 }
+
+                communication.setSpecialCommand(false);
                 communication.beforeSend();
                 byte[] sendBuffer = communication.getSendBuffer();
                 if (!(null != sendBuffer && sendBuffer.length > 0)) {
@@ -261,11 +263,12 @@ public class BluetoothTool implements Runnable {
                 }
 
                 String valueString = SerialUtility.byte2HexStr(sendBuffer);
-                int expectLength;
+                int expectLength = -1;
                 String cmdHead = valueString.substring(0, 4);
                 if (cmdHead.equals("0106") || cmdHead.equals("0170")) {
                     expectLength = 8;
-                } else {
+                }
+                else {
                     expectLength = SerialUtility.getIntFromBytes(sendBuffer) * 2 + 6;
                 }
                 int timeout = 0;
@@ -311,7 +314,7 @@ public class BluetoothTool implements Runnable {
                         }
                         break;
                     }
-                    if (result.length == expectLength) {
+                    if (result.length == expectLength || communication.isSpecialCmd()) {
                         communication.setReceivedBuffer(result);
                         communication.afterReceive();
                         Message mg = new Message();

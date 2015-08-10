@@ -57,6 +57,7 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -103,6 +104,19 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
      * 用于获取协议类型 Handler
      */
     private  GetProtocolTypeHandler getDeviceProtocolTypeHandler;
+
+    /**
+     * 用于获取设备功能分组的 Handler
+     */
+    private GetParameterGroupHandler parameterGroupgHandler;
+    private GetParameterListHandler parameterListHandler;
+
+
+    private List<String> groupList = null;
+    HashMap<String, List<String>> parList = new HashMap<String, List<String>>();//二维数组
+
+    private BluetoothTalk[] getParGroupCommunication;
+    private BluetoothTalk[] getParameterCommunications;
 
     /**
      * 用于取得设备型号的通信内容
@@ -197,19 +211,32 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
     private static final int CONNECT_DEVICE = 2;
 
     /**
+     * 识别新旧协议信号状态
+     */
+    private static final int GET_DEVICE_PROTOCOL = 3;
+
+    /**
+     * 读取设备分组一级菜单
+     *
+     */
+    private static final int READ_DEVICE_GROUP = 4;
+
+    /**
+     * 读取设备分组二级菜单
+     *
+     */
+    private static final int READ_DEVICE_GROUP_DETAIL = 5;
+
+    /**
      * 读取标准设备信号状态
      */
-    private static final int GET_NORMAL_DEVICE_TYPE = 3;
+    private static final int GET_NORMAL_DEVICE_TYPE = 6;
 
     /**
      * 读取非标准设备信号状态
      */
-    private static final int GET_SPECIAL_DEVICE_TYPE = 4;
+    private static final int GET_SPECIAL_DEVICE_TYPE = 7;
 
-    /**
-     * 识别新旧协议信号状态
-     */
-    private static final int GET_DEVICE_PROTOCOL = 5;
 
     /**
      * 当前的 Task 状态
@@ -338,6 +365,7 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
             public void onClick(View view) {
                 if (BluetoothTool.getInstance().isPrepared()) {
                     startActivity(new Intent(NavigationTabActivity.this, CallFloorWindow.class));
+
                 }
             }
         });
@@ -363,17 +391,63 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
         });
 
         searchBluetoothHandler = new SearchBluetoothHandler(this);
+
+        getDeviceProtocolTypeHandler = new GetProtocolTypeHandler(this);
         getNormalDeviceTypeHandler = new GetNormalDeviceTypeHandler(this);
         getSpecialDeviceTypeHandler = new GetSpecialDeviceTypeHandler(this);
-        getDeviceProtocolTypeHandler = new GetProtocolTypeHandler(this);
+
+
         getDeviceTypeTask = new Runnable() {
             @Override
             public void run() {
                 if (isRunning) {
-                    if (!hasGetDeviceType) {
-                        if (BluetoothTool.getInstance().isLocked()) {
-                            return;
+                    if (BluetoothTool.getInstance().isLocked()) {
+                        return;
+                    }
+
+                    if (currentTask == GET_DEVICE_PROTOCOL) {
+                        if (talkTime >= MaxRetryTime) {
+                            talkTime = 0;
+                            currentTask = READ_DEVICE_GROUP;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(NavigationTabActivity.this,
+                                            R.string.recognise_protocol_failed_text,
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
+                    }
+                    else if (currentTask == READ_DEVICE_GROUP) {
+                        if (talkTime >= MaxRetryTime) {
+                            talkTime = 0;
+                            currentTask = GET_NORMAL_DEVICE_TYPE;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(NavigationTabActivity.this,
+                                            R.string.get_device_parameter1_failed_text,
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+                    else if (currentTask == READ_DEVICE_GROUP_DETAIL) {
+                        if (talkTime >= MaxRetryTime) {
+                            talkTime = 0;
+                            currentTask = GET_NORMAL_DEVICE_TYPE;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(NavigationTabActivity.this,
+                                            R.string.get_device_parameter2_failed_text,
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+                    else if (!hasGetDeviceType) {
                         if (currentTask == GET_NORMAL_DEVICE_TYPE) {
                             if (talkTime >= MaxRetryTime) {
                                 // 内部用户版本
@@ -423,10 +497,11 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
                                 }
                             }
                         }
-                        talkTime++;
-                        pool.execute(NavigationTabActivity.this);
-                        delayHandler.postDelayed(getDeviceTypeTask, LOOP_TIME);
                     }
+
+                    talkTime++;
+                    pool.execute(NavigationTabActivity.this);
+                    delayHandler.postDelayed(getDeviceTypeTask, LOOP_TIME);
                 }
             }
         };
@@ -549,7 +624,8 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
         if (!hasGetDeviceType) {
             isRunning = true;
             talkTime = 0;
-            currentTask = GET_NORMAL_DEVICE_TYPE;
+            //currentTask = GET_NORMAL_DEVICE_TYPE;
+            currentTask = GET_DEVICE_PROTOCOL;
             delayHandler.postDelayed(getDeviceTypeTask, LOOP_TIME);
             recogniseHandler.sendEmptyMessage(StartRecogniseDevice);
         }
@@ -952,8 +1028,8 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
                 names.add(device.getName());
             }
         }
-        startCheckProtocolType();
 
+        startCheckProtocolType();
         AlertDialog.Builder builder = new AlertDialog.Builder(NavigationTabActivity.this);
         builder.setTitle(R.string.choice_device_type_title);
         builder.setItems(names.toArray(new String[names.size()]), new DialogInterface.OnClickListener() {
@@ -1019,6 +1095,7 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
                                     device.getId(),
                                     device.getName(),
                                     Device.SpecialDevice);
+
                         }
                     });
                 } else {
@@ -1029,7 +1106,9 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
                 }
             }
         }
+
     }
+
 
     /**
      * 显示选择同步或者异步对话框
@@ -1059,6 +1138,24 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
                     BluetoothTool.getInstance().connectDevice(tempDevice);
                 }
                 break;
+
+            case GET_DEVICE_PROTOCOL:
+                if (!BluetoothTool.getInstance().isLocked()) {
+                    getProtocolType();
+                }
+                break;
+            case READ_DEVICE_GROUP:
+                if (!BluetoothTool.getInstance().isLocked()) {
+                    getParameterGroup();
+                }
+                break;
+            case READ_DEVICE_GROUP_DETAIL:
+                if (!BluetoothTool.getInstance().isLocked()) {
+                    getParameterList();
+                }
+                break;
+
+
             case GET_NORMAL_DEVICE_TYPE:
                 if (!BluetoothTool.getInstance().isLocked()) {
                     getNormalDeviceType();
@@ -1069,13 +1166,142 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
                     getSpecialDeviceType();
                 }
                 break;
-            case GET_DEVICE_PROTOCOL:
-                if (!BluetoothTool.getInstance().isLocked()) {
-                    getProtocolType();
-                }
-                break;
+
 
         }
+    }
+
+    /**
+     * 获取要显示的参数组
+     */
+    private void getParameterGroup() {
+        if (getParGroupCommunication == null) {
+            getParGroupCommunication = new BluetoothTalk[]{
+                    new BluetoothTalk() {
+                        @Override
+                        public void beforeSend() {
+                            this.setSendBuffer(SerialUtility.crc16("010390000001"));
+                            this.setSpecialCommand(true);
+                        }
+
+                        @Override
+                        public void afterSend() {
+
+                        }
+
+                        @Override
+                        public void beforeReceive() {
+                        }
+
+                        @Override
+                        public void afterReceive() {
+
+                        }
+
+                        @Override
+                        public Object onParse() {
+                            byte[] data = getReceivedBuffer();
+                            if (data.length >15 && SerialUtility.isCRC16Valid(data)) {
+                                List<String> list = new ArrayList<String>();
+                                int nRetCount = (data[2] << 8) | data[3];//返回字节个数,每组3个字节
+                                for (int i = 0; i < nRetCount / 3; i++) {
+                                    //组个数
+                                    int nGroupCount = data[4 + 3 * i] & 0x0F;
+                                    //组名
+                                    String str = String.format("%X", (data[4 + 3 * i] >> 8) & 0x0F);
+                                    int nGroupBit = (data[5 + 3 * i] << 8) | data[6 + 3 * i];
+                                    for (int j = 0; j < nGroupCount; j++) {
+                                        if (1 == ((nGroupBit >> j) & 0x01)) {
+                                            list.add(str + String.format("%X", j));
+                                        }
+                                    }
+                                }
+                                groupList = list;
+                                return list;
+                            }
+                            return null;
+                        }
+                    }
+            };
+        }
+        if (BluetoothTool.getInstance().isPrepared()) {
+            BluetoothTool.getInstance()
+                    .setHandler(parameterGroupgHandler)
+                    .setCommunications(getParGroupCommunication)
+                    .startTask();
+        }
+
+    }
+
+    /**
+     * 获取要显示的参数组
+     */
+    private void getParameterList() {
+        if (groupList == null)
+            return;
+        if (getParameterCommunications == null) {
+            int count = groupList.size();
+            getParameterCommunications = new BluetoothTalk[count];
+            for (int i = 0; i < count; i++) {
+                final String strGroup = groupList.get(i);
+                getParameterCommunications[i] = new BluetoothTalk() {
+                    @Override
+                    public void beforeSend() {
+                        this.setSendBuffer(SerialUtility.crc16("0103"
+                                + strGroup + "FF0001"));
+                        this.setSpecialCommand(true);
+                    }
+
+                    @Override
+                    public void afterSend() {
+
+                    }
+
+                    @Override
+                    public void beforeReceive() {
+                    }
+
+                    @Override
+                    public void afterReceive() {
+
+                    }
+
+                    @Override
+                    public Object onParse() {
+                        byte[] data = getReceivedBuffer();
+                        if (SerialUtility.isCRC16Valid(data)) {
+                            List<String> list = new ArrayList<String>();
+                            int nRetCount = (data[2] << 8) | data[3];//返回字节个数
+                            for (int i = nRetCount - 1; i >= 0; i--) {
+                                int nParData = data[4 + i];
+                                for (int j = 0; j < 8; j++) {
+                                    if (nParData >> j == 1) {
+                                        //参数名
+                                        int nParCount = j + (nRetCount - i - 1) * 8;
+                                        String str;
+                                        if (nParCount >= 100)
+                                            str = String.format("%03X", nParCount);
+                                        else
+                                            str = String.format("%02X", nParCount);
+                                        list.add(strGroup + "-" + str);
+                                    }
+                                }
+                            }
+                            parList.put(strGroup, list);
+                            return list;
+                        }
+                        return null;
+                    }
+                };
+            }
+        }
+        if (BluetoothTool.getInstance().isPrepared()) {
+            BluetoothTool.getInstance()
+                    .setHandler(parameterListHandler)
+                    .setCommunications(getParameterCommunications)
+                    .startTask();
+        }
+
     }
 
     @Override
@@ -1140,23 +1366,23 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
             Activity currentActivity = lam.getActivity(tabHost.getCurrentTabTag());
             switch (tabHost.getCurrentTab()) {
                 case 0: {
-                    if (currentActivity instanceof TroubleAnalyzeActivity) {
-                        TroubleAnalyzeActivity troubleAnalyzeActivity = (TroubleAnalyzeActivity) currentActivity;
-                        troubleAnalyzeActivity.reSyncData();
-                    }
-                }
-                break;
-                case 1: {
                     if (currentActivity instanceof ConfigurationActivity) {
                         ConfigurationActivity configurationActivity = (ConfigurationActivity) currentActivity;
                         configurationActivity.reSyncData();
                     }
                 }
                 break;
-                case 2: {
+                case 1: {
                     if (currentActivity instanceof HomeActivity) {
                         HomeActivity homeActivity = (HomeActivity) currentActivity;
                         homeActivity.reSyncData();
+                    }
+                }
+                break;
+                case 2: {
+                    if (currentActivity instanceof TroubleAnalyzeActivity) {
+                        TroubleAnalyzeActivity troubleAnalyzeActivity = (TroubleAnalyzeActivity) currentActivity;
+                        troubleAnalyzeActivity.reSyncData();
                     }
                 }
                 break;
@@ -1281,7 +1507,29 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
         public void onTalkReceive(Message msg) {
             super.onTalkReceive(msg);
             if (msg.obj != null && msg.obj instanceof Integer) {
-                isRunning = false;
+                if (ApplicationConfig.bNewProtocol == 1) {
+                    currentTask = READ_DEVICE_GROUP;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(NavigationTabActivity.this,
+                                    R.string.new_protocol_text,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else {
+                    currentTask = GET_NORMAL_DEVICE_TYPE;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(NavigationTabActivity.this,
+                                    R.string.original_protocol_text,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
             }
         }
 
@@ -1289,8 +1537,81 @@ public class NavigationTabActivity extends FragmentActivity implements Runnable,
         public void onBluetoothConnectException(Message message) {
             super.onBluetoothConnectException(message);
             ApplicationConfig.bNewProtocol = -1;
-            //currentTask = GET_NORMAL_DEVICE_TYPE;
         }
+    }
+
+
+    // ============================== Get ParameterGroup Handler ================================================ //
+
+    private class GetParameterGroupHandler extends UnlockHandler {
+
+        public GetParameterGroupHandler(Activity activity) {
+            super(activity);
+            TAG = GetParameterGroupHandler.class.getSimpleName();
+        }
+
+        @Override
+        public void onMultiTalkBegin(Message msg) {
+            super.onMultiTalkBegin(msg);
+        }
+
+        @Override
+        public void onMultiTalkEnd(Message msg) {
+            super.onMultiTalkEnd(msg);
+        }
+
+        @Override
+        public void onTalkReceive(Message msg) {
+            super.onTalkReceive(msg);
+            if (msg.obj != null) {
+                //收到数据
+                currentTask = READ_DEVICE_GROUP_DETAIL;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(NavigationTabActivity.this,
+                                R.string.read_group_parameter1_success_text,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+    }
+
+    // ============================== Get ParameterList Handler ================================================ //
+
+    private class GetParameterListHandler extends UnlockHandler {
+
+        public GetParameterListHandler(Activity activity) {
+            super(activity);
+            TAG = GetParameterListHandler.class.getSimpleName();
+        }
+
+        @Override
+        public void onMultiTalkBegin(Message msg) {
+            super.onMultiTalkBegin(msg);
+        }
+
+        @Override
+        public void onMultiTalkEnd(Message msg) {
+            super.onMultiTalkEnd(msg);
+        }
+
+        @Override
+        public void onTalkReceive(Message msg) {
+            super.onTalkReceive(msg);
+            if (msg.obj != null) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(NavigationTabActivity.this,
+                                R.string.read_group_parameter2_success_text,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+
     }
 
 }

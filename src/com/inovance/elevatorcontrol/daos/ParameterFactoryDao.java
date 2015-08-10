@@ -92,6 +92,7 @@ public class ParameterFactoryDao {
                 break;
             case ApplicationConfig.FunctionTabType:
                 GroupTabDao.deleteAllByDeviceID(context, deviceID);
+                GroupTabDetailDao.deleteAllByDeviceID(context, deviceID);
                 break;
         }
     }

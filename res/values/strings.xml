@@ -42,7 +42,15 @@
     <string name="check_parameter_failed_use_local_parameter_message">检查设备参数更新失败，调用本地数据。</string>
     <string name="check_parameter_failed_message">检查设备参数更新失败，请检查网络连接更新参数。</string>
     <string name="recognise_device_wait_text">正在识别设备，请稍后。</string>
+    <string name="recognise_protocol_failed_text">未能识别主板协议，请稍后重启尝试。</string>
+    <string name="get_device_parameter1_failed_text">读取设备中常用和专家一级分组数据失败，系统使用当前数据库默认菜单。</string>
+    <string name="get_device_parameter2_failed_text">读取设备中常用和专家二级分组数据失败，系统使用当前数据库默认菜单。</string>
     <string name="recognise_device_failed_text">未能识别设备，请尝试其他设备。</string>
+    <string name="new_protocol_text">Current device is NEW protocol。</string>
+    <string name="original_protocol_text">Current device is original protocol。</string>
+    <string name="read_group_parameter1_success_text">已读取设备中常用和专家一级分组数据。</string>
+    <string name="read_group_parameter2_success_text">已读取设备详细分组数据。</string>
+
     <string name="code_parse_error_tips">内部数据出错，请联系管理员。</string>
     <string name="cannot_restore_elevator_factory">电梯处于运行状态，无法恢复出厂设置。</string>
 

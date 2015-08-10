@@ -148,7 +148,9 @@ public class ConfigurationFragment extends Fragment {
 
     private void initGroupListView() {
         groupSettingsList.clear();
-        groupSettingsList.addAll(ParameterGroupSettingsDao.findAll(context));
+        List<ParameterGroupSettings> allSettings = ParameterGroupSettingsDao.findAll(context);
+
+        groupSettingsList.addAll(allSettings);
         groupAdapter = new InstantAdapter<ParameterGroupSettings>(
                 getActivity().getApplicationContext(),
                 R.layout.list_configuration_setting_item,
@@ -164,6 +166,7 @@ public class ConfigurationFragment extends Fragment {
             }
         });
     }
+
 
 //    public void reloadDataSource(List<RealTimeMonitor> items) {
 //        monitorList.clear();

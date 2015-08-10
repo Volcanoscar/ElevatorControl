@@ -40,6 +40,11 @@ public abstract class BluetoothTalk {
         this.sendBuffer = sendBuffer;
     }
 
+    //是否特殊指令，回复长度不限定
+    private boolean isSpecialCmd;
+    public void setSpecialCommand(boolean isSpecialCmd) {this.isSpecialCmd = isSpecialCmd;}
+    public boolean isSpecialCmd() {return this.isSpecialCmd;}
+
     public byte[] getReceivedBuffer() {
         return receivedBuffer;
     }
