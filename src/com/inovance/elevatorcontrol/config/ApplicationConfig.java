@@ -20,6 +20,12 @@ public class ApplicationConfig {
     public static final String CheckDeviceProtocol = "017010000000";
 
     /**
+     * 有返回: 全部中的一级菜单
+     * 无返回或者返回8001错误码
+     */
+    public static final String GetDeviceGroupForAll = "010390000001";
+
+    /**
      * 是否是内部用户版本
      * true内部用户版本 false普通用户版本
      */

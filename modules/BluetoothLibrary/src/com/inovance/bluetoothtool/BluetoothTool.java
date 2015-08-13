@@ -264,12 +264,13 @@ public class BluetoothTool implements Runnable {
 
                 String valueString = SerialUtility.byte2HexStr(sendBuffer);
                 int expectLength = -1;
-                String cmdHead = valueString.substring(0, 4);
-                if (cmdHead.equals("0106") || cmdHead.equals("0170")) {
-                    expectLength = 8;
-                }
-                else {
-                    expectLength = SerialUtility.getIntFromBytes(sendBuffer) * 2 + 6;
+                if (!communication.isSpecialCmd()) {
+                    String cmdHead = valueString.substring(0, 4);
+                    if (cmdHead.equals("0106") || cmdHead.equals("0170")) {
+                        expectLength = 8;
+                    } else {
+                        expectLength = SerialUtility.getIntFromBytes(sendBuffer) * 2 + 6;
+                    }
                 }
                 int timeout = 0;
                 List<Byte> buffer = new ArrayList<Byte>();
@@ -286,6 +287,11 @@ public class BluetoothTool implements Runnable {
                     }
                     byte[] result = Bytes.toArray(buffer);
                     String value = SerialUtility.byte2HexStr(result);
+
+                    if (expectLength == -1) {
+                        expectLength = SerialUtility.getIntFromFeedback(result) + 6;
+                    }
+
                     if (value.contains("8001") && result.length == 8) {
                         communication.setReceivedBuffer(result);
                         communication.afterReceive();
@@ -314,7 +320,7 @@ public class BluetoothTool implements Runnable {
                         }
                         break;
                     }
-                    if (result.length == expectLength || communication.isSpecialCmd()) {
+                    if (result.length >= expectLength) {
                         communication.setReceivedBuffer(result);
                         communication.afterReceive();
                         Message mg = new Message();
@@ -698,6 +704,7 @@ public class BluetoothTool implements Runnable {
     private BluetoothTool interrupt() {
         try {
             abortTalking = true;
+            Log.v("BluetoothTool", "interrupt: ");
             pool.awaitTermination(200, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             e.printStackTrace();

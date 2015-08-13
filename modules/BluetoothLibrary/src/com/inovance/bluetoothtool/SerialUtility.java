@@ -402,6 +402,15 @@ public class SerialUtility {
         }
     }
 
+    @SuppressLint("GetIntFromFeeddback")
+    public static int getIntFromFeedback(byte[] data) {
+        if (data.length > 3) {
+            return data[2] << 8 & 0xFF00 | data[3] & 0xFF;
+        } else {
+            return -1;
+        }
+    }
+
     private static byte[] concatenateByteArrays(byte[] a, byte[] b) {
         byte[] result = new byte[a.length + b.length];
         System.arraycopy(a, 0, result, 0, a.length);

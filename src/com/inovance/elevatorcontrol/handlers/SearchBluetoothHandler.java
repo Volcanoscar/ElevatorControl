@@ -88,8 +88,10 @@ public class SearchBluetoothHandler extends BluetoothHandler {
         super.onConnected(msg);
         isChangingDevice = false;
         mNavigationTabActivity.showRefreshButtonProgress(false);
-        // 显示选择操作类型对话框
-        mNavigationTabActivity.showSelectOperationDialog();
+
+        mNavigationTabActivity.startGetProtocolParameterTask();
+//        // 显示选择操作类型对话框
+//        mNavigationTabActivity.showSelectOperationDialog();
         // 更新蓝牙状态标识
         mNavigationTabActivity.updateConnectStatusUI();
         Toast.makeText(activity, activity.getResources().getString(R.string.success_connect),

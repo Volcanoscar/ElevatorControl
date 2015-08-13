@@ -162,7 +162,7 @@ public class CheckAuthorizationActivity extends Activity implements WebInterface
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         WebInterface.getInstance().setOnRequestListener(this);
         WebInterface.getInstance().verifyUser(this, bluetoothAdapter.getAddress());
-    }
+}
 
     /**
      * 写入功能码、帮助、状态数据
@@ -184,20 +184,20 @@ public class CheckAuthorizationActivity extends Activity implements WebInterface
         }
     }
 
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case WRITE_FINISH: {
-                    progressView.setVisibility(View.GONE);
-                    btnLogin.setEnabled(true);
-                    btnSignUp.setEnabled(true);
-                }
-                break;
+private Handler mHandler = new Handler() {
+    @Override
+    public void handleMessage(Message msg) {
+        switch (msg.what) {
+            case WRITE_FINISH: {
+                progressView.setVisibility(View.GONE);
+                btnLogin.setEnabled(true);
+                btnSignUp.setEnabled(true);
             }
-            super.handleMessage(msg);
+            break;
         }
-    };
+        super.handleMessage(msg);
+    }
+};
 
     Runnable runnable = new Runnable() {
 
